@@ -224,9 +224,11 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		setSnackbarVisibility();
 		if (LocationHelper.isBetterLocation(location, this.loc)) {
 			setShareButtonEnabled(true);
+			final Location oldLoc = this.loc;
 			this.loc = location;
 
-			if (this.marker_fixed_to_loc) {
+			// Don't jump back to the users location if they're not moving (more or less).
+			if (this.marker_fixed_to_loc && this.loc.distanceTo(oldLoc) > 1) {
 				gotoLoc();
 			}
 
