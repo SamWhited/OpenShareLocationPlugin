@@ -3,12 +3,6 @@
       xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/toggle_fixed_marker_button"
-          android:title="@string/action_unfix_from_location"
-          android:icon="@drawable/ic_gps_fixed_white_24dp"
-          android:showAsAction="ifRoom"
-          tools:ignore="AppCompatResource"/>
-
     <item android:id="@+id/action_about"
           android:title="@string/action_about"
           android:orderInCategory="100"
