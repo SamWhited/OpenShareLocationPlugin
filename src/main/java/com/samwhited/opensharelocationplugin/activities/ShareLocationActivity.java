@@ -228,7 +228,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			this.loc = location;
 
 			// Don't jump back to the users location if they're not moving (more or less).
-			if (this.marker_fixed_to_loc && oldLoc != null && this.loc.distanceTo(oldLoc) > 1) {
+			if (oldLoc == null || (this.marker_fixed_to_loc && this.loc.distanceTo(oldLoc) > 1)) {
 				gotoLoc();
 			}
 
