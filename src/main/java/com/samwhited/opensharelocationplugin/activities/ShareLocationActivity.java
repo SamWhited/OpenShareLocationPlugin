@@ -112,15 +112,14 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			}
 		});
 
-		// Setup the fab button
-
+		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			final ImageButton toggleFixedMarkerButton = (ImageButton) findViewById(R.id.toggle_fixed_marker_button);
 			toggleFixedMarkerButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View view) {
 					final ImageButton fab = (ImageButton) view;
-					marker_fixed_to_loc = !marker_fixed_to_loc;
+					toggleFixedLocation();
 
 					runOnUiThread(new Runnable() {
 						@Override
@@ -130,9 +129,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 							fab.invalidate();
 						}
 					});
-
-					gotoLoc();
-					updateLocationMarker();
 				}
 			});
 		}
@@ -284,6 +280,14 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		return true;
 	}
 
+	public void toggleFixedLocation() {
+		marker_fixed_to_loc = !marker_fixed_to_loc;
+		if (marker_fixed_to_loc) {
+			gotoLoc();
+		}
+		updateLocationMarker();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
@@ -294,14 +298,11 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 				startActivity(new Intent(this, AboutActivity.class));
 				return true;
 			case R.id.toggle_fixed_marker_button:
-				marker_fixed_to_loc = !marker_fixed_to_loc;
+				toggleFixedLocation();
 				item.setIcon(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
 						R.drawable.ic_gps_not_fixed_white_24dp);
 				item.setTitle(marker_fixed_to_loc ? R.string.action_unfix_from_location :
 						R.string.action_fix_to_location);
-
-				gotoLoc();
-				updateLocationMarker();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
