@@ -3,10 +3,10 @@
     <string name="title_activity_share_location">OSM sdílet polohu</string>
     <string name="title_activity_show_location">OSM zobrazit polohu</string>
 
-    <string name="action_about">O</string>
+    <string name="action_about">O aplikaci</string>
     <string name="action_copy_location">Kopírovat polohu</string>
     <string name="action_share_location">Sdílet polohu</string>
-    <string name="title_activity_about">O</string>
+    <string name="title_activity_about">O aplikaci</string>
 
     <string name="location_disabled">Sdílení polohy je vypnuto</string>
     <string name="enable">Povolit</string>
