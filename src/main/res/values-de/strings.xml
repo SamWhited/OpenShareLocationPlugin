@@ -13,7 +13,7 @@
     <string name="cancel">Abbruch</string>
     <string name="share">Freigeben</string>
     <string name="locating">Standort ermitteln…</string>
-    <string name="action_fix_to_location">Position feststellen</string>
+    <string name="action_fix_to_location">Position fixieren</string>
     <string name="action_unfix_from_location">Position lösen</string>
 
 </resources>
