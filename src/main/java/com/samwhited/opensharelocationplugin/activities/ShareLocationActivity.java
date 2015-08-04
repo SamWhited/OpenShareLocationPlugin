@@ -36,6 +36,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	private RelativeLayout snackBar;
 	private MapView map;
 	private boolean marker_fixed_to_loc = false;
+	private MenuItem toggle_fixed_location_item;
 
 	private static final String KEY_LOCATION = "loc";
 	private static final String KEY_ZOOM_LEVEL = "zoom";
@@ -170,18 +171,10 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		super.onPause();
 	}
 
-	private void setSnackbarVisibility() {
-		if (isLocationEnabled()) {
-			this.snackBar.setVisibility(View.GONE);
-		} else {
-			this.snackBar.setVisibility(View.VISIBLE);
-		}
-	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setSnackbarVisibility();
+		updateLocationUi();
 		updateLocationMarker();
 	}
 
@@ -205,7 +198,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			this.marker_fixed_to_loc = true;
 		}
 		updateLocationUi();
-		setSnackbarVisibility();
 		if (LocationHelper.isBetterLocation(location, this.loc)) {
 			final Location oldLoc = this.loc;
 			this.loc = location;
@@ -262,6 +254,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_share_location, menu);
+		this.toggle_fixed_location_item = menu.findItem(R.id.toggle_fixed_marker_button);
+		updateLocationUi();
 		return true;
 	}
 
@@ -275,6 +269,11 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	private void updateLocationUi() {
+		if (isLocationEnabled()) {
+			this.snackBar.setVisibility(View.GONE);
+		} else {
+			this.snackBar.setVisibility(View.VISIBLE);
+		}
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			// Setup the fab button on v21+ devices
 			final ImageButton fab = (ImageButton) findViewById(R.id.toggle_fixed_marker_button);
@@ -292,26 +291,29 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 					}
 				});
 			} else {
-				setSnackbarVisibility();
 				fab.setVisibility(View.GONE);
 			}
 		} else {
 			// Setup the action bar button on < v21 devices
-			final MenuItem item = (MenuItem) findViewById(R.id.toggle_fixed_marker_button);
 			if (isLocationEnabled()) {
-				item.setVisible(true);
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						item.setIcon(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
-								R.drawable.ic_gps_not_fixed_white_24dp);
-						item.setTitle(marker_fixed_to_loc ? R.string.action_unfix_from_location :
-								R.string.action_fix_to_location);
-					}
-				});
+				if (toggle_fixed_location_item != null) {
+					toggle_fixed_location_item.setVisible(true);
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							toggle_fixed_location_item.setIcon(marker_fixed_to_loc ?
+									R.drawable.ic_gps_fixed_white_24dp : R.drawable.ic_gps_not_fixed_white_24dp
+							);
+							toggle_fixed_location_item.setTitle(marker_fixed_to_loc ?
+									R.string.action_unfix_from_location : R.string.action_fix_to_location
+							);
+						}
+					});
+				}
 			} else {
-				setSnackbarVisibility();
-				item.setVisible(false);
+				if (toggle_fixed_location_item != null) {
+					toggle_fixed_location_item.setVisible(false);
+				}
 			}
 		}
 	}
