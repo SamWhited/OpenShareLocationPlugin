@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Otevřený modul sdílení polohy</string>
-    <string name="title_activity_share_location">OSM sdílet polohu</string>
-    <string name="title_activity_show_location">OSM zobrazit polohu</string>
+    <string name="title_activity_share_location">Sdílet polohu</string>
+    <string name="title_activity_show_location">Zobrazit polohu</string>
 
     <string name="action_about">O aplikaci</string>
     <string name="action_copy_location">Kopírovat polohu</string>

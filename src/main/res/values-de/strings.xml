@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Open Standort-Freigabe Plugin</string>
-    <string name="title_activity_share_location">OSM Standort freigeben</string>
-    <string name="title_activity_show_location">OSM Standort zeigen</string>
+    <string name="title_activity_share_location">Standort freigeben</string>
+    <string name="title_activity_show_location">Standort zeigen</string>
 
     <string name="action_about">Über</string>
     <string name="action_copy_location">Standort kopieren</string>
