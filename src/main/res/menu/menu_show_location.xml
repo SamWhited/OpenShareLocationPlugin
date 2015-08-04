@@ -9,16 +9,10 @@
           tools:ignore="AppCompatResource"/>
     <item android:id="@+id/action_copy_location"
           android:title="@string/action_copy_location"
-          android:orderInCategory="100"
+          android:orderInCategory="90"
           app:showAsAction="never"/>
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
-          android:orderInCategory="90"
-          app:showAsAction="never"
-          android:showAsAction="never"
-          tools:ignore="AppCompatResource"/>
-    <item android:id="@+id/action_about"
-          android:title="@string/action_about"
           android:orderInCategory="100"
           app:showAsAction="never"
           android:showAsAction="never"

@@ -9,5 +9,7 @@
         android:entryValues="@array/pref_tile_provider_values"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
+    <com.samwhited.opensharelocationplugin.preferences.AboutPreference
+        android:title="@string/title_activity_about"/>
 
 </PreferenceScreen>

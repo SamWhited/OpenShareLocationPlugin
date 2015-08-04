@@ -82,9 +82,6 @@ public abstract class LocationActivity extends Activity implements LocationListe
 			case android.R.id.home:
 				finish();
 				return true;
-			case R.id.action_about:
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, SettingsActivity.class));
 		}
