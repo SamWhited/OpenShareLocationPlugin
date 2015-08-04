@@ -14,8 +14,6 @@
     <string name="enable">Enable</string>
     <string name="cancel">Cancel</string>
     <string name="share">Share</string>
-    <string name="locating">Locating…</string>
-
 
 	<string name="about_text" translatable="false">
 		<b>Open Show Location Plugin</b> for Conversations
