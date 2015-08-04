@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ShareActionProvider;
 
 import com.samwhited.opensharelocationplugin.R;
@@ -58,6 +61,17 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		this.mapController = map.getController();
 		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
 		mapController.setCenter(this.loc);
+
+		// Setup the fab button on v21+ devices
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			final ImageButton navigationButton = (ImageButton) findViewById(R.id.action_directions);
+			navigationButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(final View view) {
+					startNavigation();
+				}
+			});
+		}
 
 		requestLocationUpdates();
 	}
@@ -195,13 +209,17 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 				clipboard.setPrimaryClip(clip);
 				return true;
 			case R.id.action_directions:
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-						"google.navigation:q=" +
-								String.valueOf(this.loc.getLatitude()) + "," + String.valueOf(this.loc.getLongitude())
-				)));
+				startNavigation();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void startNavigation() {
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+				"google.navigation:q=" +
+						String.valueOf(this.loc.getLatitude()) + "," + String.valueOf(this.loc.getLongitude())
+		)));
 	}
 
 	@Override
