@@ -3,6 +3,7 @@ package com.samwhited.opensharelocationplugin.activities;
 import android.app.ActionBar;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -36,6 +37,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	private Location myLoc = null;
 	private IMapController mapController;
 	private MapView map;
+	private ImageButton navigationButton;
+	private MenuItem navigationMenuItem;
 
 	private Uri createGeoUri() {
 		return Uri.parse("geo:" + this.loc.getLatitude() + "," + this.loc.getLongitude());
@@ -64,8 +67,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			final ImageButton navigationButton = (ImageButton) findViewById(R.id.action_directions);
-			navigationButton.setOnClickListener(new View.OnClickListener() {
+			this.navigationButton = (ImageButton) findViewById(R.id.action_directions);
+			this.navigationButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View view) {
 					startNavigation();
@@ -73,6 +76,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 			});
 		}
 
+		updateDirectionsUi();
 		requestLocationUpdates();
 	}
 
@@ -100,6 +104,9 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 			item.setVisible(false);
 		}
 
+		this.navigationMenuItem = menu.findItem(R.id.action_directions);
+
+		updateDirectionsUi();
 		return true;
 	}
 
@@ -121,6 +128,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	@Override
 	protected void onResume() {
 		super.onResume();
+		updateDirectionsUi();
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 
 		final Intent intent = getIntent();
@@ -220,6 +228,17 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 				"google.navigation:q=" +
 						String.valueOf(this.loc.getLatitude()) + "," + String.valueOf(this.loc.getLongitude())
 		)));
+	}
+
+	private void updateDirectionsUi() {
+		final Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=0,0"));
+		final ComponentName component = i.resolveActivity(getPackageManager());
+		if (this.navigationButton != null) {
+			this.navigationButton.setVisibility(component == null ? View.GONE : View.VISIBLE);
+		}
+		if (this.navigationMenuItem != null) {
+			this.navigationMenuItem.setVisible(component != null);
+		}
 	}
 
 	@Override
