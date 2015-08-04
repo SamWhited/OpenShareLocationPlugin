@@ -7,6 +7,12 @@
           android:title="@string/action_share_location"
           android:actionProviderClass="android.widget.ShareActionProvider"
           tools:ignore="AppCompatResource"/>
+    <item android:id="@+id/action_navigate"
+          android:title="@string/action_directions"
+          android:icon="@drawable/ic_directions_white_24dp"
+          app:showAsAction="ifRoom"
+          android:showAsAction="ifRoom"
+          tools:ignore="AppCompatResource"/>
     <item android:id="@+id/action_copy_location"
           android:title="@string/action_copy_location"
           android:icon="@drawable/ic_content_copy_white_24dp"

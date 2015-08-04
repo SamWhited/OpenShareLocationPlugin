@@ -2,17 +2,16 @@
     <string name="app_name">Otevřený modul sdílení polohy</string>
     <string name="title_activity_share_location">Sdílet polohu</string>
     <string name="title_activity_show_location">Zobrazit polohu</string>
+    <string name="title_activity_about">O aplikaci</string>
+    <string name="title_activity_settings">Nastavení</string>
 
     <string name="action_about">O aplikaci</string>
     <string name="action_copy_location">Kopírovat polohu</string>
     <string name="action_share_location">Sdílet polohu</string>
-    <string name="title_activity_about">O aplikaci</string>
+    <string name="action_settings">Nastavení</string>
 
     <string name="location_disabled">Sdílení polohy je vypnuto</string>
     <string name="enable">Povolit</string>
     <string name="cancel">Zrušit</string>
     <string name="share">Sdílet</string>
-    <string name="action_settings">Nastavení</string>
-    <string name="title_activity_settings">Nastavení</string>
-
 </resources>
