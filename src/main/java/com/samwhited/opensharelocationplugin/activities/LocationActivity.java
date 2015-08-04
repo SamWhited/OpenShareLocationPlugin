@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -84,6 +85,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, SettingsActivity.class));
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

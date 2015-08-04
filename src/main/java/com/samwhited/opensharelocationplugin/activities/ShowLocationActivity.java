@@ -194,6 +194,12 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 				final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
 				clipboard.setPrimaryClip(clip);
 				return true;
+			case R.id.action_directions:
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+						"google.navigation:q=" +
+								String.valueOf(this.loc.getLatitude()) + "," + String.valueOf(this.loc.getLongitude())
+				)));
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
