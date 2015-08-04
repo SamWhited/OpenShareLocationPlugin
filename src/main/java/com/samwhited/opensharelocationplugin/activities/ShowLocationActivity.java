@@ -17,6 +17,7 @@ import com.samwhited.opensharelocationplugin.overlays.Marker;
 import com.samwhited.opensharelocationplugin.overlays.MyLocation;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
+import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
@@ -50,7 +51,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 		// Get map view and configure it.
 		map = (MapView) findViewById(R.id.map);
-		map.setTileSource(Config.TILE_SOURCE_PROVIDER);
+		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
 
@@ -106,6 +107,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	@Override
 	protected void onResume() {
 		super.onResume();
+		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
+
 		final Intent intent = getIntent();
 
 		boolean zoom = true;
@@ -186,12 +189,6 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
-			case R.id.action_about:
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
 			case R.id.action_copy_location:
 				final ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 				final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());

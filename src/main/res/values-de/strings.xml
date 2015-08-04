@@ -14,5 +14,7 @@
     <string name="share">Freigeben</string>
     <string name="action_fix_to_location">Position fixieren</string>
     <string name="action_unfix_from_location">Position lösen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_activity_settings">Einstellungen</string>
 
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_tile_provider_values">
+        <item>MAPNIK</item>
+        <item>MAPQUESTOSM</item>
+        <item>MAPQUESTAERIAL</item>
+        <item>MAPQUESTAERIAL_US</item>
+        <item>CYCLEMAP</item>
+        <item>PUBLIC_TRANSPORT</item>
+    </string-array>
+</resources>

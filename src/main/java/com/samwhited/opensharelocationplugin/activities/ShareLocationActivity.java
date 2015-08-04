@@ -22,6 +22,7 @@ import com.samwhited.opensharelocationplugin.overlays.Marker;
 import com.samwhited.opensharelocationplugin.overlays.MyLocation;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
+import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
@@ -72,7 +73,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 		// Get map view and configure it.
 		map = (MapView) findViewById(R.id.map);
-		map.setTileSource(Config.TILE_SOURCE_PROVIDER);
+		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
 
@@ -174,6 +175,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	protected void onResume() {
 		super.onResume();
+		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		updateLocationUi();
 		updateLocationMarker();
 	}
@@ -285,8 +287,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 						fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
 								R.drawable.ic_gps_not_fixed_white_24dp);
 						fab.setContentDescription(getResources().getString(
-								marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
-						));
+									marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
+									));
 						fab.invalidate();
 					}
 				});
@@ -303,10 +305,10 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 						public void run() {
 							toggle_fixed_location_item.setIcon(marker_fixed_to_loc ?
 									R.drawable.ic_gps_fixed_white_24dp : R.drawable.ic_gps_not_fixed_white_24dp
-							);
+									);
 							toggle_fixed_location_item.setTitle(marker_fixed_to_loc ?
 									R.string.action_unfix_from_location : R.string.action_fix_to_location
-							);
+									);
 						}
 					});
 				}
@@ -321,12 +323,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
-			case R.id.action_about:
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
 			case R.id.toggle_fixed_marker_button:
 				toggleFixedLocation();
 				return true;

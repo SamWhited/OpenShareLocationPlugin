@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="tile_provider"
+        android:title="@string/pref_tile_provider"
+        android:defaultValue="-1"
+        android:entries="@array/pref_tile_provider_titles"
+        android:entryValues="@array/pref_tile_provider_values"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+</PreferenceScreen>

@@ -12,5 +12,7 @@
     <string name="enable">Povolit</string>
     <string name="cancel">Zrušit</string>
     <string name="share">Sdílet</string>
+    <string name="action_settings">Nastavení</string>
+    <string name="title_activity_settings">Nastavení</string>
 
 </resources>

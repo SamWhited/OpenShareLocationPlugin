@@ -2,11 +2,16 @@ package com.samwhited.opensharelocationplugin.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.MenuItem;
 
+import com.samwhited.opensharelocationplugin.R;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 
@@ -48,7 +53,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
 			lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 			if (lastKnownLocationNetwork != null && LocationHelper.isBetterLocation(lastKnownLocationNetwork,
-					lastKnownLocationGps)) {
+						lastKnownLocationGps)) {
 				setLoc(lastKnownLocationNetwork);
 			}
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
@@ -72,16 +77,35 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	}
 
 	@Override
-		protected void onPause() {
-			super.onPause();
-			pauseLocationUpdates();
+	public boolean onOptionsItemSelected(final MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+			case R.id.action_about:
+				startActivity(new Intent(this, AboutActivity.class));
+				return true;
+			case R.id.action_settings:
+				startActivity(new Intent(this, SettingsActivity.class));
 		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	@Override
-		protected void onResume() {
-			super.onResume();
-			this.setLoc(null);
+	protected void onPause() {
+		super.onPause();
+		pauseLocationUpdates();
+	}
 
-			requestLocationUpdates();
-		}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.setLoc(null);
+
+		requestLocationUpdates();
+	}
+
+	protected SharedPreferences getPreferences() {
+		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	}
 }
