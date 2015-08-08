@@ -4,5 +4,6 @@
         <item>MAPNIK</item>
         <item>MAPQUESTOSM</item>
         <item>MAPQUESTAERIAL</item>
+        <item>CYCLEMAP</item>
     </string-array>
 </resources>

@@ -36,9 +36,9 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	private GeoPoint loc = Config.INITIAL_POS;
 	private Location myLoc = null;
 	private IMapController mapController;
-	private MapView map;
 	private ImageButton navigationButton;
 	private MenuItem navigationMenuItem;
+
 
 	private Uri createGeoUri() {
 		return Uri.parse("geo:" + this.loc.getLatitude() + "," + this.loc.getLongitude());
@@ -80,7 +80,6 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		requestLocationUpdates();
 	}
 
-
 	@Override
 	protected void setLoc(final Location location) {
 		this.myLoc = location;
@@ -90,6 +89,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_show_location, menu);
+
+		super.setupMenuPrefs(menu);
 
 		final MenuItem item = menu.findItem(R.id.action_share_location);
 		if (item.getActionProvider() != null && loc != null) {
@@ -110,8 +111,9 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		return true;
 	}
 
-	private void addOverlays() {
-		this.map.getOverlays().clear();
+	@Override
+	protected void updateLocationMarkers() {
+		super.updateLocationMarkers();
 		this.map.getOverlays().add(0, new Marker(this, this.loc));
 
 		if (myLoc != null) {
@@ -203,7 +205,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 				}
 				mapController.animateTo(this.loc);
 
-				addOverlays();
+				updateLocationMarkers();
 			}
 		}
 	}
@@ -245,7 +247,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	public void onLocationChanged(final Location location) {
 		if (LocationHelper.isBetterLocation(location, this.myLoc)) {
 			this.myLoc = location;
-			addOverlays();
+			updateLocationMarkers();
 		}
 	}
 

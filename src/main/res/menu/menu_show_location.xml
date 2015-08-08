@@ -19,6 +19,13 @@
           app:showAsAction="ifRoom"
           android:showAsAction="ifRoom"
           tools:ignore="AppCompatResource"/>
+    <item android:id="@+id/action_show_public_transport"
+          android:title="@string/action_show_public_transport"
+          android:checkable="true"
+          android:checked="false"
+          app:showAsAction="never"
+          android:showAsAction="never"
+          tools:ignore="AppCompatResource"/>
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"

@@ -33,9 +33,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 	private Location loc;
 	private IMapController mapController;
-	private Button shareButton;
 	private RelativeLayout snackBar;
-	private MapView map;
 	private boolean marker_fixed_to_loc = false;
 	private MenuItem toggle_fixed_location_item;
 
@@ -102,27 +100,29 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		});
 
 		// Setup the share button
-		this.shareButton = (Button) findViewById(R.id.share_button);
-		this.shareButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-				final Intent result = new Intent();
+		final Button shareButton = (Button) findViewById(R.id.share_button);
+		if (shareButton != null) {
+			shareButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(final View view) {
+					final Intent result = new Intent();
 
-				if (marker_fixed_to_loc && loc != null) {
-					result.putExtra("latitude", loc.getLatitude());
-					result.putExtra("longitude", loc.getLongitude());
-					result.putExtra("altitude", loc.getAltitude());
-					result.putExtra("accuracy", (int) loc.getAccuracy());
-				} else {
-					final IGeoPoint markerPoint = map.getMapCenter();
-					result.putExtra("latitude", markerPoint.getLatitude());
-					result.putExtra("longitude", markerPoint.getLongitude());
+					if (marker_fixed_to_loc && loc != null) {
+						result.putExtra("latitude", loc.getLatitude());
+						result.putExtra("longitude", loc.getLongitude());
+						result.putExtra("altitude", loc.getAltitude());
+						result.putExtra("accuracy", (int) loc.getAccuracy());
+					} else {
+						final IGeoPoint markerPoint = map.getMapCenter();
+						result.putExtra("latitude", markerPoint.getLatitude());
+						result.putExtra("longitude", markerPoint.getLongitude());
+					}
+
+					setResult(RESULT_OK, result);
+					finish();
 				}
-
-				setResult(RESULT_OK, result);
-				finish();
-			}
-		});
+			});
+		}
 
 		this.marker_fixed_to_loc = isLocationEnabled();
 
@@ -177,11 +177,12 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		super.onResume();
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		updateLocationUi();
-		updateLocationMarker();
+		updateLocationMarkers();
 	}
 
-	private void updateLocationMarker() {
-		this.map.getOverlays().clear();
+	@Override
+	protected void updateLocationMarkers() {
+		super.updateLocationMarkers();
 		if (this.loc != null) {
 			this.map.getOverlays().add(new MyLocation(this, this.loc));
 			if (this.marker_fixed_to_loc) {
@@ -209,7 +210,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 				gotoLoc();
 			}
 
-			updateLocationMarker();
+			updateLocationMarkers();
 		}
 	}
 
@@ -256,6 +257,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_share_location, menu);
+		super.setupMenuPrefs(menu);
 		this.toggle_fixed_location_item = menu.findItem(R.id.toggle_fixed_marker_button);
 		updateLocationUi();
 		return true;
@@ -266,7 +268,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		if (marker_fixed_to_loc) {
 			gotoLoc();
 		}
-		updateLocationMarker();
+		updateLocationMarkers();
 		updateLocationUi();
 	}
 
