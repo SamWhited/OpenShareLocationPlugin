@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.location.Location;
 
-import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.R;
+import com.samwhited.opensharelocationplugin.util.Config;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;

@@ -61,6 +61,8 @@ public abstract class LocationActivity extends Activity implements LocationListe
 			}
 			map.getOverlays().add(this.public_transport_overlay);
 		}
+
+		map.invalidate();
 	}
 
 	protected void clearMarkers() {

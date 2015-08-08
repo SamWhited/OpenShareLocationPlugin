@@ -1,7 +1,5 @@
 package com.samwhited.opensharelocationplugin.util;
 
-import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 
 public final class Config {
