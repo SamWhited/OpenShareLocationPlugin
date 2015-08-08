@@ -46,6 +46,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 			final MapTileProviderBasic tileProvider = new MapTileProviderBasic(getApplicationContext());
 			tileProvider.setTileSource(TileSourceFactory.MAPQUESTAERIAL);
 			this.mapquest_overlay = new TilesOverlay(tileProvider, getApplicationContext());
+			map.getOverlays().add(0, this.mapquest_overlay);
 		} else {
 			map.getOverlays().remove(this.mapquest_overlay);
 		}
@@ -59,7 +60,10 @@ public abstract class LocationActivity extends Activity implements LocationListe
 				tileProvider.setTileSource(TileSourceFactory.PUBLIC_TRANSPORT);
 				this.public_transport_overlay = new TilesOverlay(tileProvider, getApplicationContext());
 			}
-			map.getOverlays().add(this.public_transport_overlay);
+			map.getOverlays().add(
+					map.getOverlays().contains(this.mapquest_overlay) ? 1 : 0,
+					this.public_transport_overlay
+			);
 		}
 
 		map.invalidate();
