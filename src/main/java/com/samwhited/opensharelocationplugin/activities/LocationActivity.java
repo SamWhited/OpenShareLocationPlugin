@@ -32,11 +32,22 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";
 
 	private TilesOverlay public_transport_overlay = null;
+	private TilesOverlay mapquest_overlay = null;
 	protected MapView map = null;
 
 	protected void updateOverlays() {
 		if (this.map == null) {
 			return;
+		}
+
+		// If we're using MapQuest Aerial view, overlay the (higher resolution) data if we're in the USA.
+		if (map.getTileProvider().getTileSource() == TileSourceFactory.MAPQUESTAERIAL_US &&
+				(mapquest_overlay == null || !map.getOverlays().contains(this.mapquest_overlay))) {
+			final MapTileProviderBasic tileProvider = new MapTileProviderBasic(getApplicationContext());
+			tileProvider.setTileSource(TileSourceFactory.MAPQUESTAERIAL);
+			this.mapquest_overlay = new TilesOverlay(tileProvider, getApplicationContext());
+		} else {
+			map.getOverlays().remove(this.mapquest_overlay);
 		}
 
 		if (map.getOverlays().contains(this.public_transport_overlay)) {
