@@ -20,12 +20,9 @@
 
 	<string name="pref_tile_provider">Tile provider</string>
 	<string-array name="pref_tile_provider_titles">
-		<item>Mapnik (OSM)</item>
+		<item>Mapnik</item>
 		<item>Mapquest (OSM)</item>
 		<item>Mapquest Aerial</item>
-		<item>Mapquest Aerial (US)</item>
-		<item>Cycle Map</item>
-		<item>Public Transport</item>
 	</string-array>
 
 	<string name="about_text" translatable="false">
@@ -57,6 +54,10 @@
 		\n\nhttps://github.com/osmdroid/osmdroid\n(Apache License)
 		\n\nhttps://github.com/siacs/Conversations\n(GPL)
 		\n\nhttps://github.com/siacs/ShareLocationPlugin\n(GPL)
+
+		\n\n\n<b>Maps</b>
+		\n\nMaps by Mapnik (http://mapnik.org), MapQuest (http://open.mapquest.com),
+		and Open Street Map (https://www.openstreetmap.org). Copyright restrictions may apply.
 	</string>
 
 </resources>

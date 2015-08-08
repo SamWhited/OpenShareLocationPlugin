@@ -12,12 +12,6 @@ public final class SettingsHelper {
 				return TileSourceFactory.MAPQUESTOSM;
 			case "MAPQUESTAERIAL":
 				return TileSourceFactory.MAPQUESTAERIAL;
-			case "MAPQUESTAERIAL_US":
-				return TileSourceFactory.MAPQUESTAERIAL_US;
-			case "CYCLEMAP":
-				return TileSourceFactory.CYCLEMAP;
-			case "PUBLIC_TRANSPORT":
-				return TileSourceFactory.PUBLIC_TRANSPORT;
 			default:
 				return TileSourceFactory.DEFAULT_TILE_SOURCE;
 		}

@@ -4,8 +4,5 @@
         <item>MAPNIK</item>
         <item>MAPQUESTOSM</item>
         <item>MAPQUESTAERIAL</item>
-        <item>MAPQUESTAERIAL_US</item>
-        <item>CYCLEMAP</item>
-        <item>PUBLIC_TRANSPORT</item>
     </string-array>
 </resources>
