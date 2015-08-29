@@ -19,7 +19,7 @@
     <string name="share">Share</string>
 
     <string name="pref_tile_provider">Tile provider</string>
-    <string-array name="pref_tile_provider_titles">
+    <string-array name="pref_tile_provider_titles" translatable="false">
         <item>Mapnik</item>
         <item>Mapquest (OSM)</item>
         <item>Mapquest Aerial</item>

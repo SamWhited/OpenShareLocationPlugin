@@ -3,7 +3,7 @@
     <ListPreference
         android:key="tile_provider"
         android:title="@string/pref_tile_provider"
-        android:defaultValue="-1"
+        android:defaultValue="MAPNIK"
         android:summary="%s"
         android:entries="@array/pref_tile_provider_titles"
         android:entryValues="@array/pref_tile_provider_values"
