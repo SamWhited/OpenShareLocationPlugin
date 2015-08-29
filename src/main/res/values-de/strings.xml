@@ -10,10 +10,14 @@
 	<string name="action_share_location">Standort teilen</string>
 	<string name="action_fix_to_location">Position fixieren</string>
 	<string name="action_unfix_from_location">Position lösen</string>
+	<string name="action_show_public_transport">ÖPNV anzeigen</string>
+	<string name="action_directions">Navigation</string>
 	<string name="action_settings">Einstellungen</string>
 
 	<string name="location_disabled">Standort-Freigabe ist in den Einstellungen deaktiviert</string>
 	<string name="enable">Aktivieren</string>
 	<string name="cancel">Abbruch</string>
 	<string name="share">Freigeben</string>
+
+	<string name="pref_tile_provider">Kartenanbieter</string>
 </resources>
