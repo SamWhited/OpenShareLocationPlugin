@@ -21,7 +21,7 @@
         android:layout_above="@+id/button_bar"
         android:background="@drawable/snackbar"
         android:minHeight="48dp"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"

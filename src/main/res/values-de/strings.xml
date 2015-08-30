@@ -5,7 +5,6 @@
 	<string name="title_activity_about">Über</string>
 	<string name="title_activity_settings">Einstellungen</string>
 
-	<string name="action_about">Über</string>
 	<string name="action_copy_location">Standort kopieren</string>
 	<string name="action_share_location">Standort teilen</string>
 	<string name="action_fix_to_location">Position fixieren</string>

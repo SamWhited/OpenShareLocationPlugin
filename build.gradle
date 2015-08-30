@@ -20,9 +20,9 @@ android {
 
 	defaultConfig {
 		applicationId "com.samwhited.opensharelocationplugin"
-		minSdkVersion 14
+		minSdkVersion 17
 		targetSdkVersion 23
-		versionName "1.2.0-beta4"
+		versionName "2.0-beta"
 	}
 
 	compileOptions {

@@ -5,7 +5,6 @@
     <string name="title_activity_about">O aplikaci</string>
     <string name="title_activity_settings">Nastavení</string>
 
-    <string name="action_about">O aplikaci</string>
     <string name="action_copy_location">Kopírovat polohu</string>
     <string name="action_share_location">Sdílet polohu</string>
     <string name="action_settings">Nastavení</string>

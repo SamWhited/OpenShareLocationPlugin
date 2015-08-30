@@ -1,10 +1,14 @@
 package com.samwhited.opensharelocationplugin.overlays;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.location.Location;
+import android.os.Build;
 
 import com.samwhited.opensharelocationplugin.R;
 import com.samwhited.opensharelocationplugin.util.Config;
@@ -22,11 +26,23 @@ public class MyLocation extends SimpleLocationOverlay {
 	private final Paint fill;
 	private final Paint outline;
 
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private int getColor(final Context ctx) {
+		final int accent;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			accent = ctx.getResources().getColor(R.color.accent, ctx.getTheme());
+		} else {
+			//noinspection deprecation
+			accent = ctx.getResources().getColor(R.color.accent);
+		}
+		return accent;
+	}
+
 	public MyLocation(final Context ctx, final Location position) {
 		super(ctx);
 		this.mapCenterPoint = new Point();
 		this.fill = new Paint(Paint.ANTI_ALIAS_FLAG);
-		final int accent = ctx.getResources().getColor(R.color.accent);
+		final int accent = this.getColor(ctx);
 		fill.setColor(accent);
 		fill.setStyle(Paint.Style.FILL);
 		this.outline = new Paint(Paint.ANTI_ALIAS_FLAG);

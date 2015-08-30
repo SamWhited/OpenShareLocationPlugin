@@ -21,21 +21,19 @@
         android:layout_above="@+id/button_bar"
         android:background="@drawable/snackbar"
         android:minHeight="48dp"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/snackbar_action"
             android:layout_toStartOf="@+id/snackbar_action"
-            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
             android:textColor="@color/ondarktext"
             android:textSize="?attr/TextSizeBody"
             android:text="@string/location_disabled"
-            tools:ignore="RtlHardcoded,RtlSymmetry"/>
+            tools:ignore="RtlSymmetry"/>
 
         <TextView
             android:id="@+id/snackbar_action"
@@ -51,7 +49,6 @@
             android:textStyle="bold"
             android:text="@string/enable"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
