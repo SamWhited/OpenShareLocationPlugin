@@ -5,3 +5,4 @@ build/
 .idea/
 *.iml
 OpenShareLocationPlugin-*.apk
+gradle.properties
