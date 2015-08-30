@@ -52,16 +52,21 @@ android {
 			}
 		}
 		buildTypes.release.signingConfig = signingConfigs.release
+		buildTypes.debug.signingConfig = signingConfigs.release
 	} else {
 		buildTypes.release.signingConfig = null
+		buildTypes.debug.signingConfig = null
 	}
 
 	applicationVariants.all { variant ->
-		if (variant.name.equals('release')) {
-			variant.outputs.each { output ->
-				if (output.zipAlign != null) {
-					output.zipAlign.outputFile = new File(output.outputFile.parent, rootProject.name + "-${variant.versionName}.apk")
-				}
+		variant.outputs.each { output ->
+			def SIGNED = variant.signingConfig != null ? 'signed' : 'unsigned'
+			def alignedOutputFile = output.outputFile
+			if (variant.buildType.zipAlignEnabled) {
+				output.outputFile = new File(
+					alignedOutputFile.parent,
+					rootProject.name + "-${variant.name}-${SIGNED}-${variant.versionName}.apk"
+				)
 			}
 		}
 	}
