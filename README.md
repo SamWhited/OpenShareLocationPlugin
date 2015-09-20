@@ -1,6 +1,7 @@
 # Open Share Location Plugin for Conversations
 
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.samwhited.opensharelocationplugin)
+[![Flattr](https://button.flattr.com/flattr-badge-large.png)][flattrthis]
 
 This is a location sharing plugin for the XMPP client
 [Conversations][conversations]. Unlike the
@@ -24,9 +25,10 @@ save battery where possible).
 ## Donate
 
 If you'd like to donate to this project, you can send bitcoin to:
-`1PYd7Koqd3ucSxKQRZQZRoB3qi7WaAFvL5`
+`1PYd7Koqd3ucSxKQRZQZRoB3qi7WaAFvL5` or use [Flattr][flattrthis]
 
 [conversations]: https://github.com/siacs/Conversations
 [conversations-loc]: https://github.com/siacs/ShareLocationPlugin
 [osmdroid]: https://github.com/osmdroid/osmdroid
 [mapnik]: http://mapnik.org/
+[flattrthis]: https://flattr.com/submit/auto?user_id=SamWhited&url=https%3A%2F%2Fbitbucket.org%2FSamWhited%2Fopensharelocationplugin
