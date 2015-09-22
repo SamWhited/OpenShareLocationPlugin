@@ -2,7 +2,6 @@
 
 [![Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.samwhited.opensharelocationplugin)
 [![Amazon App Store](https://images-na.ssl-images-amazon.com/images/G/01/AmazonMobileApps/amazon-apps-store-us-black.png)](https://www.amazon.com/gp/product/B015M1CBJO)
-[![Flattr](https://button.flattr.com/flattr-badge-large.png)][flattrthis]
 
 This is a location sharing plugin for the XMPP client
 [Conversations][conversations]. Unlike the
@@ -26,7 +25,9 @@ save battery where possible).
 ## Donate
 
 If you'd like to donate to this project, you can send bitcoin to:
-`1PYd7Koqd3ucSxKQRZQZRoB3qi7WaAFvL5` or use [Flattr][flattrthis]
+`1PYd7Koqd3ucSxKQRZQZRoB3qi7WaAFvL5` or use Flattr:
+
+[![Flattr this](https://button.flattr.com/flattr-badge-large.png)][flattrthis]
 
 [conversations]: https://github.com/siacs/Conversations
 [conversations-loc]: https://github.com/siacs/ShareLocationPlugin
