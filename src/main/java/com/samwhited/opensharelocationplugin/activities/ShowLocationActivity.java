@@ -159,7 +159,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 						final String z = query.get("z");
 						if (z != null) {
 							try {
-								mapController.setZoom(Integer.valueOf(keyval[1]));
+								mapController.setZoom(Integer.valueOf(z));
 								zoom = false;
 							} catch (final Exception ignored) {
 							}
@@ -181,20 +181,14 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 						}
 
 						final String schemeSpecificPart = geoUri.getSchemeSpecificPart();
-					}
-
-					if (geoUri != null && geoUri.getSchemeSpecificPart() != null && !geoUri.getSchemeSpecificPart().isEmpty()) {
-						final String[] parts = geoUri.getSchemeSpecificPart().split(",");
-						if (parts[1].contains("?")) {
-							parts[1] = parts[1].substring(0, parts[1].indexOf("?"));
-						}
-						if (parts.length == 2 && !posInQuery) {
-							try {
-								this.loc = new GeoPoint(Double.valueOf(parts[0]), Double.valueOf(parts[1]));
-							} catch (final Exception ignored) {
+						if (schemeSpecificPart != null && !schemeSpecificPart.isEmpty()) {
+							final GeoPoint latlong = LocationHelper.parseLatLong(schemeSpecificPart);
+							if (latlong != null && !posInQuery) {
+								this.loc = latlong;
 							}
 						}
 					}
+
 					break;
 			}
 			if (this.mapController != null && this.loc != Config.INITIAL_POS) {
