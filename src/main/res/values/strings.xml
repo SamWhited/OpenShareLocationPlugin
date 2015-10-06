@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Open Share Location Plugin</string>
+    <string name="app_name" translatable="false">Open Share Location Plugin</string>
     <string name="title_activity_share_location">Share location</string>
     <string name="title_activity_show_location">Show location</string>
     <string name="title_activity_settings">Settings</string>

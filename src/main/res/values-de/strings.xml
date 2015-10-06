@@ -1,5 +1,4 @@
 <resources>
-	<string name="app_name">Open Standort-Freigabe Plugin</string>
 	<string name="title_activity_share_location">Standort freigeben</string>
 	<string name="title_activity_show_location">Standort zeigen</string>
 	<string name="title_activity_about">Über</string>

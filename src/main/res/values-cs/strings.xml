@@ -1,11 +1,9 @@
 <resources>
-    <string name="app_name">Open Share Location Plugin</string>
     <string name="title_activity_share_location">Sdílet umístění</string>
     <string name="title_activity_show_location">Zobrazit umístění</string>
     <string name="title_activity_settings">Nastavení</string>
     <string name="title_activity_about">O aplikaci</string>
 
-    <string name="action_about">O aplikaci</string>
     <string name="action_directions">Nasměrování</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_fix_to_location">Zamknout pozici</string>
@@ -19,13 +17,6 @@
     <string name="share">Sdílet</string>
 
     <string name="pref_tile_provider">Mapové podklady</string>
-    <string-array name="pref_tile_provider_titles">
-        <item>Mapnik</item>
-        <item>Mapquest (OSM)</item>
-        <item>Mapquest Aerial</item>
-        <item>Cycle Map</item>
-    </string-array>
-
     <string name="action_show_public_transport">Zobrazit veřejnou dopravu</string>
 
 </resources>
