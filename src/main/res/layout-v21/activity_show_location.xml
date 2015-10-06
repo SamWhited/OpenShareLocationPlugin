@@ -24,5 +24,6 @@
         android:elevation="10dp"
         android:translationZ="10dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        tools:ignore="InconsistentLayout"/>
 </RelativeLayout>

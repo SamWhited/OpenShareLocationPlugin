@@ -101,6 +101,7 @@
         android:elevation="10dp"
         android:translationZ="10dp"
         android:layout_alignParentEnd="true"
-        android:layout_above="@id/snackbar"/>
+        android:layout_above="@id/snackbar"
+        tools:ignore="InconsistentLayout"/>
 
 </RelativeLayout>
