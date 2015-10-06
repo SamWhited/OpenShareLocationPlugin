@@ -23,7 +23,7 @@ android {
 		minSdkVersion 17
 		targetSdkVersion 23
 		versionCode 6
-		versionName "2.0.0"
+		versionName "2.0.1-alpha"
 	}
 
 	compileOptions {
