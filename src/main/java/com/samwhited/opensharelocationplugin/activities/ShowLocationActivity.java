@@ -22,11 +22,13 @@ import com.samwhited.opensharelocationplugin.overlays.MyLocation;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 import com.samwhited.opensharelocationplugin.util.SettingsHelper;
+import com.samwhited.opensharelocationplugin.util.UriHelper;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,42 +149,38 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 					}
 					break;
 				case Intent.ACTION_VIEW:
-					// TODO: This is some serious spaghetti code. Write a proper geo URI parser.
 					final Uri geoUri = intent.getData();
-					// Seriously terrible control flow here.
-					boolean posInQuery = false;
 
 					// Attempt to set zoom level if the geo URI specifies it
-					if (geoUri != null && geoUri.getQuery() != null && !geoUri.getQuery().isEmpty()) {
-						final String[] query = geoUri.getQuery().split("&");
-						for (final String param : query) {
-							final String[] keyval = param.split("=");
-							switch (keyval[0]) {
-								case "z":
-									if (keyval.length == 2 && keyval[1] != null && !keyval[1].isEmpty()) {
-										try {
-											mapController.setZoom(Integer.valueOf(keyval[1]));
-											zoom = false;
-										} catch (final Exception ignored) {
-										}
-									}
-									break;
-								case "q":
-									final Pattern latlng = Pattern.compile("/^([-+]?[0-9]+(\\.[0-9]+)?),([-+]?[0-9]+(\\.[0-9]+)?)(\\(.*\\))?/");
+					if (geoUri != null) {
+						final HashMap<String, String> query = UriHelper.parseQueryString(geoUri.getQuery());
 
-									if (keyval.length == 2 && keyval[1] != null && !keyval[1].isEmpty()) {
-										final Matcher m = latlng.matcher(keyval[1]);
-										if (m.matches()) {
-											try {
-												this.loc = new GeoPoint(Double.valueOf(m.group(1)), Double.valueOf(m.group(3)));
-											} catch (final Exception ignored) {
-											}
-											posInQuery = true;
-										}
-									}
-									break;
+						// Check for zoom level.
+						final String z = query.get("z");
+						if (z != null) {
+							try {
+								mapController.setZoom(Integer.valueOf(keyval[1]));
+								zoom = false;
+							} catch (final Exception ignored) {
 							}
 						}
+
+						// Check for the actual geo query.
+						boolean posInQuery = false;
+						final String q = query.get("q");
+						if (q != null) {
+							final Pattern latlng = Pattern.compile("/^([-+]?[0-9]+(\\.[0-9]+)?),([-+]?[0-9]+(\\.[0-9]+)?)(\\(.*\\))?/");
+							final Matcher m = latlng.matcher(q);
+							if (m.matches()) {
+								try {
+									this.loc = new GeoPoint(Double.valueOf(m.group(1)), Double.valueOf(m.group(3)));
+									posInQuery = true;
+								} catch (final Exception ignored) {
+								}
+							}
+						}
+
+						final String schemeSpecificPart = geoUri.getSchemeSpecificPart();
 					}
 
 					if (geoUri != null && geoUri.getSchemeSpecificPart() != null && !geoUri.getSchemeSpecificPart().isEmpty()) {
@@ -227,9 +225,9 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 	private void startNavigation() {
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-				"google.navigation:q=" +
+						"google.navigation:q=" +
 						String.valueOf(this.loc.getLatitude()) + "," + String.valueOf(this.loc.getLongitude())
-		)));
+						)));
 	}
 
 	private void updateDirectionsUi() {

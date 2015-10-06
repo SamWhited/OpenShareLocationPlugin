@@ -2,7 +2,27 @@ package com.samwhited.opensharelocationplugin.util;
 
 import android.location.Location;
 
+import org.osmdroid.util.GeoPoint;
+
 public final class LocationHelper {
+	/**
+	 * Parses a lat long string in the form "lat,long".
+	 *
+	 * @param latlong A string in the form "lat,long"
+	 * @return A GeoPoint representing the lat,long string.
+	 */
+	public static GeoPoint parseLatLong(final String latlong) {
+		if (latlong == null || latlong.isEmpty()) {
+			return null;
+		}
+
+		final String[] parts = latlong.split(",");
+		if (parts[1].contains("?")) {
+			parts[1] = parts[1].substring(0, parts[1].indexOf("?"));
+		}
+		return new GeoPoint(Double.valueOf(parts[0]), Double.valueOf(parts[1]));
+	}
+
 	private static boolean isSameProvider(final String provider1, final String provider2) {
 		if (provider1 == null) {
 			return provider2 == null;
