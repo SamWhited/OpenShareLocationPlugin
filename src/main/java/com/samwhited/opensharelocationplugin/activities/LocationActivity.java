@@ -1,14 +1,19 @@
 package com.samwhited.opensharelocationplugin.activities;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,9 +32,12 @@ import org.osmdroid.views.overlay.TilesOverlay;
 import java.util.Iterator;
 
 public abstract class LocationActivity extends Activity implements LocationListener {
-	private LocationManager locationManager;
+	protected LocationManager locationManager;
 
 	public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";
+
+	public static final int REQUEST_CODE_START_UPDATING = 0;
+	public static final int REQUEST_CODE_CREATE = 1;
 
 	private TilesOverlay public_transport_overlay = null;
 	private TilesOverlay mapquest_overlay = null;
@@ -70,7 +78,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	}
 
 	protected void clearMarkers() {
-		for (final Iterator<Overlay> iterator = this.map.getOverlays().iterator(); iterator.hasNext();) {
+		for (final Iterator<Overlay> iterator = this.map.getOverlays().iterator(); iterator.hasNext(); ) {
 			final Overlay overlay = iterator.next();
 			if (overlay instanceof Marker || overlay instanceof MyLocation) {
 				iterator.remove();
@@ -103,41 +111,46 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		final Location lastKnownLocationGps;
 		final Location lastKnownLocationNetwork;
 
-		if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
-			lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-			if (lastKnownLocationGps != null) {
-				setLoc(lastKnownLocationGps);
-			}
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
-					Config.LOCATION_FIX_SPACE_DELTA, this);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			requestLocationPermissions(REQUEST_CODE_START_UPDATING);
 		} else {
-			lastKnownLocationGps = null;
-		}
 
-		if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
-			lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			if (lastKnownLocationNetwork != null && LocationHelper.isBetterLocation(lastKnownLocationNetwork,
-						lastKnownLocationGps)) {
-				setLoc(lastKnownLocationNetwork);
+			if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+				lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+				if (lastKnownLocationGps != null) {
+					setLoc(lastKnownLocationGps);
+				}
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
+						Config.LOCATION_FIX_SPACE_DELTA, this);
+			} else {
+				lastKnownLocationGps = null;
 			}
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
-					Config.LOCATION_FIX_SPACE_DELTA, this);
-		}
 
-		// If something else is also querying for location more frequently than we are, the battery is already being
-		// drained. Go ahead and use the existing locations as often as we can get them.
-		if (locationManager.getAllProviders().contains(LocationManager.PASSIVE_PROVIDER)) {
-			locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
-		}
+			if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+				lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+				if (lastKnownLocationNetwork != null && LocationHelper.isBetterLocation(lastKnownLocationNetwork,
+						lastKnownLocationGps)) {
+					setLoc(lastKnownLocationNetwork);
+				}
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
+						Config.LOCATION_FIX_SPACE_DELTA, this);
+			}
 
-		try {
-			gotoLoc();
-		} catch (final UnsupportedOperationException ignored) {
+			// If something else is also querying for location more frequently than we are, the battery is already being
+			// drained. Go ahead and use the existing locations as often as we can get them.
+			if (locationManager.getAllProviders().contains(LocationManager.PASSIVE_PROVIDER)) {
+				locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
+			}
+
+			try {
+				gotoLoc();
+			} catch (final UnsupportedOperationException ignored) {
+			}
 		}
 	}
 
-	protected void pauseLocationUpdates() {
+	protected void pauseLocationUpdates() throws SecurityException {
 		locationManager.removeUpdates(this);
 	}
 
@@ -172,16 +185,44 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	@Override
 	protected void onPause() {
 		super.onPause();
-		pauseLocationUpdates();
+		try {
+			pauseLocationUpdates();
+		} catch (final SecurityException ignored) {
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		this.setLoc(null);
-
 		requestLocationUpdates();
 		updateOverlays();
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	protected void requestLocationPermissions(final int request_code) {
+		if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+				checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(
+					new String[]{
+							Manifest.permission.ACCESS_FINE_LOCATION,
+							Manifest.permission.ACCESS_COARSE_LOCATION
+					},
+					request_code
+			);
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode,
+	                                       @NonNull final String[] permissions,
+	                                       @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		for (final int perm : grantResults) {
+			if (perm == PackageManager.PERMISSION_GRANTED) {
+				requestLocationUpdates();
+			}
+		}
 	}
 
 	protected SharedPreferences getPreferences() {

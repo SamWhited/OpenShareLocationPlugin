@@ -139,8 +139,20 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 				}
 			});
 		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			requestLocationPermissions(REQUEST_CODE_CREATE);
+		} else {
+			updateLocationUi();
+			requestLocationUpdates();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode,
+	                                       @NonNull final String[] permissions,
+	                                       @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		updateLocationUi();
-		requestLocationUpdates();
 	}
 
 	@Override
@@ -234,7 +246,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		try {
 			final int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
 			return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-		} catch (final Settings.SettingNotFoundException e) {
+		} catch( final Settings.SettingNotFoundException e ){
 			return false;
 		}
 	}

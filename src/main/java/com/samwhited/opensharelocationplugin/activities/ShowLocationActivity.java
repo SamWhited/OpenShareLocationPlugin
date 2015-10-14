@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,8 +79,20 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 			});
 		}
 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			requestLocationPermissions(REQUEST_CODE_CREATE);
+		} else {
+			updateDirectionsUi();
+			requestLocationUpdates();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode,
+	                                       @NonNull final String[] permissions,
+	                                       @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		updateDirectionsUi();
-		requestLocationUpdates();
 	}
 
 	@Override
