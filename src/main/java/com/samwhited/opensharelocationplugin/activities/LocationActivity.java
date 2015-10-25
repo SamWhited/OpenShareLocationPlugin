@@ -209,24 +209,29 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
 				checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-			requestPermissions(
-					new String[]{
-							Manifest.permission.ACCESS_FINE_LOCATION,
-							Manifest.permission.ACCESS_COARSE_LOCATION
-					},
-					request_code
-			);
+			if (!askedForLocationPerm) {
+				requestPermissions(
+						new String[]{
+								Manifest.permission.ACCESS_FINE_LOCATION,
+								Manifest.permission.ACCESS_COARSE_LOCATION
+						},
+						request_code
+				);
+			}
+			getPreferences().edit().putBoolean(PREF_REQUESTED_PERM_LOCATION, false).apply();
 		}
 		if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
 				checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-			requestPermissions(
-					new String[]{
-							Manifest.permission.READ_EXTERNAL_STORAGE,
-							Manifest.permission.WRITE_EXTERNAL_STORAGE
-					},
-					request_code
-			);
+			if (!askedForStoragePerm) {
+				requestPermissions(
+						new String[]{
+								Manifest.permission.READ_EXTERNAL_STORAGE,
+								Manifest.permission.WRITE_EXTERNAL_STORAGE
+						},
+						request_code
+				);
+			}
+			getPreferences().edit().putBoolean(PREF_REQUESTED_PERM_STORAGE, false).apply();
 		}
 	}
 
