@@ -35,6 +35,8 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected LocationManager locationManager;
 
 	public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";
+	public static final String PREF_REQUESTED_PERM_LOCATION = "pref_requested_perm_location";
+	public static final String PREF_REQUESTED_PERM_STORAGE = "pref_requested_perm_location";
 
 	public static final int REQUEST_CODE_START_UPDATING = 0;
 	public static final int REQUEST_CODE_CREATE = 1;
@@ -201,12 +203,27 @@ public abstract class LocationActivity extends Activity implements LocationListe
 
 	@TargetApi(Build.VERSION_CODES.M)
 	protected void requestLocationPermissions(final int request_code) {
-		if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+		final boolean askedForLocationPerm = getPreferences().getBoolean(PREF_REQUESTED_PERM_LOCATION, false);
+		final boolean askedForStoragePerm = getPreferences().getBoolean(PREF_REQUESTED_PERM_STORAGE, false);
+
+		if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
 				checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
 			requestPermissions(
 					new String[]{
 							Manifest.permission.ACCESS_FINE_LOCATION,
 							Manifest.permission.ACCESS_COARSE_LOCATION
+					},
+					request_code
+			);
+		}
+		if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+				checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+			requestPermissions(
+					new String[]{
+							Manifest.permission.READ_EXTERNAL_STORAGE,
+							Manifest.permission.WRITE_EXTERNAL_STORAGE
 					},
 					request_code
 			);
@@ -218,11 +235,28 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	                                       @NonNull final String[] permissions,
 	                                       @NonNull final int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		for (final int perm : grantResults) {
-			if (perm == PackageManager.PERMISSION_GRANTED) {
-				requestLocationUpdates();
+		final SharedPreferences.Editor e = getPreferences().edit();
+		for (int i = 0; i < grantResults.length; i++) {
+			if (Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[i]) ||
+					Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[i])) {
+				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+					e.putBoolean(PREF_REQUESTED_PERM_LOCATION, false);
+					requestLocationUpdates();
+				} else {
+					e.putBoolean(PREF_REQUESTED_PERM_LOCATION, true);
+				}
+				continue;
+			}
+			if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permissions[i]) ||
+					Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
+				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+					e.putBoolean(PREF_REQUESTED_PERM_STORAGE, false);
+				} else {
+					e.putBoolean(PREF_REQUESTED_PERM_STORAGE, true);
+				}
 			}
 		}
+		e.apply();
 	}
 
 	protected SharedPreferences getPreferences() {
