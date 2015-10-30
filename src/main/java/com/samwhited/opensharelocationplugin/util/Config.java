@@ -3,6 +3,7 @@ package com.samwhited.opensharelocationplugin.util;
 import org.osmdroid.util.GeoPoint;
 
 public final class Config {
+	public final static String LOGTAG = "oslp";
 	public final static int INITIAL_ZOOM_LEVEL = 4;
 	public final static int FINAL_ZOOM_LEVEL = 15;
 	public final static GeoPoint INITIAL_POS = new GeoPoint(33.805278, -84.171389);

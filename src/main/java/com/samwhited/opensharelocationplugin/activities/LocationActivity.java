@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -46,6 +47,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected MapView map = null;
 
 	protected void updateOverlays() {
+		Log.d(Config.LOGTAG, "Updating overlays...");
 		if (this.map == null) {
 			return;
 		}
@@ -110,49 +112,49 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected abstract void setLoc(final Location location);
 
 	protected void requestLocationUpdates() {
+		Log.d(Config.LOGTAG, "Requesting location updates...");
 		final Location lastKnownLocationGps;
 		final Location lastKnownLocationNetwork;
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			requestLocationPermissions(REQUEST_CODE_START_UPDATING);
-		} else {
-			try {
-				if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
-					lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		}
+		try {
+			if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+				lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-					if (lastKnownLocationGps != null) {
-						setLoc(lastKnownLocationGps);
-					}
-					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
-							Config.LOCATION_FIX_SPACE_DELTA, this);
-				} else {
-					lastKnownLocationGps = null;
+				if (lastKnownLocationGps != null) {
+					setLoc(lastKnownLocationGps);
 				}
-
-				if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
-					lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-					if (lastKnownLocationNetwork != null && LocationHelper.isBetterLocation(lastKnownLocationNetwork,
-							lastKnownLocationGps)) {
-						setLoc(lastKnownLocationNetwork);
-					}
-					locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
-							Config.LOCATION_FIX_SPACE_DELTA, this);
-				}
-
-				// If something else is also querying for location more frequently than we are, the battery is already being
-				// drained. Go ahead and use the existing locations as often as we can get them.
-				if (locationManager.getAllProviders().contains(LocationManager.PASSIVE_PROVIDER)) {
-					locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
-				}
-			} catch (final SecurityException ignored) {
-				// This probably won't happen unless the user is on a ROM that allows permission tweaking.
-				// TODO: Should we do anything if that is the case?
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
+						Config.LOCATION_FIX_SPACE_DELTA, this);
+			} else {
+				lastKnownLocationGps = null;
 			}
 
-			try {
-				gotoLoc();
-			} catch (final UnsupportedOperationException ignored) {
+			if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+				lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+				if (lastKnownLocationNetwork != null && LocationHelper.isBetterLocation(lastKnownLocationNetwork,
+						lastKnownLocationGps)) {
+					setLoc(lastKnownLocationNetwork);
+				}
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
+						Config.LOCATION_FIX_SPACE_DELTA, this);
 			}
+
+			// If something else is also querying for location more frequently than we are, the battery is already being
+			// drained. Go ahead and use the existing locations as often as we can get them.
+			if (locationManager.getAllProviders().contains(LocationManager.PASSIVE_PROVIDER)) {
+				locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
+			}
+		} catch (final SecurityException ignored) {
+			// This probably won't happen unless the user is on a ROM that allows permission tweaking.
+			// TODO: Should we do anything if that is the case?
+		}
+
+		try {
+			gotoLoc();
+		} catch (final UnsupportedOperationException ignored) {
 		}
 	}
 
