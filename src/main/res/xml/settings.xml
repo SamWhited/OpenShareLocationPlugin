@@ -9,6 +9,13 @@
         android:entryValues="@array/pref_tile_provider_values"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
+    <CheckBoxPreference
+        android:key="scale_tiles_for_high_dpi"
+        android:title="@string/pref_scale_tiles"
+        android:defaultValue="false"
+        android:checked="false"
+        android:summary="@string/pref_scale_tiles_summary"
+        />
     <com.samwhited.opensharelocationplugin.preferences.AboutPreference
         android:title="@string/title_activity_about"/>
 

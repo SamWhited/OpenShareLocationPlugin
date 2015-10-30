@@ -74,6 +74,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
+		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 
 		this.mapController = map.getController();
 		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
@@ -188,6 +189,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void onResume() {
 		super.onResume();
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
+		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 		updateLocationUi();
 		updateLocationMarkers();
 	}
