@@ -1,7 +1,9 @@
 package com.samwhited.opensharelocationplugin.activities;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
@@ -96,7 +98,14 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		snackbarAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
-				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
+				if (isLocationEnabledAndAllowed()) {
+					updateLocationUi();
+				} else if (!isLocationEnabled()) {
+					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+				} else if (!hasLocationPermissions()) {
+					requestLocationPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
+				}
 			}
 		});
 
@@ -125,7 +134,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			});
 		}
 
-		this.marker_fixed_to_loc = isLocationEnabled();
+		this.marker_fixed_to_loc = isLocationEnabledAndAllowed();
 
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -133,8 +142,12 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			toggleFixedMarkerButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View view) {
-					if (!isLocationEnabled() && !marker_fixed_to_loc) {
-						startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+					if (!marker_fixed_to_loc) {
+						if (!isLocationEnabled()) {
+							startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+						} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+							requestLocationPermissions(REQUEST_CODE_FAB_PRESSED);
+						}
 					}
 					toggleFixedLocation();
 				}
@@ -142,10 +155,10 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		}
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			requestLocationPermissions(REQUEST_CODE_CREATE);
-		} else {
-			updateLocationUi();
-			requestLocationUpdates();
 		}
+
+		updateLocationUi();
+		requestLocationUpdates();
 	}
 
 	@Override
@@ -259,11 +272,20 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	private boolean isLocationEnabled() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			return isLocationEnabledKitkat();
 		} else {
 			return isLocationEnabledLegacy();
 		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	protected boolean hasLocationPermissions() {
+		return checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+	}
+
+	private boolean isLocationEnabledAndAllowed() {
+		return (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || hasLocationPermissions()) && isLocationEnabled();
 	}
 
 	@Override
@@ -276,7 +298,11 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	private void toggleFixedLocation() {
-		marker_fixed_to_loc = isLocationEnabled() && !marker_fixed_to_loc;
+		setFixedLocation(!this.marker_fixed_to_loc);
+	}
+
+	private void setFixedLocation(final boolean marker_fixed_to_loc) {
+		this.marker_fixed_to_loc = isLocationEnabledAndAllowed() && marker_fixed_to_loc;
 		if (marker_fixed_to_loc) {
 			gotoLoc();
 		}
@@ -285,7 +311,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	private void updateLocationUi() {
-		if (isLocationEnabled()) {
+		if (isLocationEnabledAndAllowed()) {
 			this.snackBar.setVisibility(View.GONE);
 		} else {
 			this.snackBar.setVisibility(View.VISIBLE);
@@ -293,7 +319,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			// Setup the fab button on v21+ devices
 			final ImageButton fab = (ImageButton) findViewById(R.id.toggle_fixed_marker_button);
-			if (isLocationEnabled()) {
+			if (isLocationEnabledAndAllowed()) {
 				fab.setVisibility(View.VISIBLE);
 				runOnUiThread(new Runnable() {
 					@Override
@@ -311,7 +337,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			}
 		} else {
 			// Setup the action bar button on < v21 devices
-			if (isLocationEnabled()) {
+			if (isLocationEnabledAndAllowed()) {
 				if (toggle_fixed_location_item != null) {
 					toggle_fixed_location_item.setVisible(true);
 					runOnUiThread(new Runnable() {
