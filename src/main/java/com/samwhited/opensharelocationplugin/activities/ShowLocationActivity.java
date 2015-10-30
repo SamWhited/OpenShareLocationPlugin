@@ -146,7 +146,6 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	protected void onResume() {
 		super.onResume();
 		updateDirectionsUi();
-		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 
 		final Intent intent = getIntent();
 

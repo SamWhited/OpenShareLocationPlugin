@@ -188,8 +188,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	protected void onResume() {
 		super.onResume();
-		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
-		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 		updateLocationUi();
 		updateLocationMarkers();
 	}

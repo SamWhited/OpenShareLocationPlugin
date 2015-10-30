@@ -23,6 +23,7 @@ import com.samwhited.opensharelocationplugin.overlays.Marker;
 import com.samwhited.opensharelocationplugin.overlays.MyLocation;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
+import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -205,6 +206,8 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		this.setLoc(null);
 		requestLocationUpdates();
 		updateOverlays();
+		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
+		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)
