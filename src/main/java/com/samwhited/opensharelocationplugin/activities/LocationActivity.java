@@ -231,6 +231,12 @@ public abstract class LocationActivity extends Activity implements LocationListe
 
 	@TargetApi(Build.VERSION_CODES.M)
 	protected void requestPermissions(final int request_code) {
+		requestLocationPermissions(request_code);
+		requestStoragePermissions(request_code);
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	protected void requestLocationPermissions(final int request_code) {
 		if (!hasLocationPermissions()) {
 			requestPermissions(
 					new String[]{
@@ -240,6 +246,10 @@ public abstract class LocationActivity extends Activity implements LocationListe
 					request_code
 			);
 		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	protected void requestStoragePermissions(final int request_code) {
 		if (!hasStoragePermissions()) {
 			requestPermissions(
 					new String[]{

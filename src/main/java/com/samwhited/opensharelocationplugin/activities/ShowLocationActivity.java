@@ -75,8 +75,11 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		// Ask for location permissions if location services are enabled and we're just starting the activity
 		// (we don't want to keep pestering them on every screen rotation or if there's no point because it's disabled
 		// anyways).
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null && isLocationEnabled()) {
-			requestPermissions(REQUEST_CODE_CREATE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null) {
+			if (isLocationEnabled()) {
+				requestLocationPermissions(REQUEST_CODE_CREATE);
+			}
+			requestStoragePermissions(REQUEST_CODE_CREATE);
 		}
 
 		updateDirectionsUi();
