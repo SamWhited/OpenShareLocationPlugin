@@ -13,7 +13,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,13 +39,10 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected LocationManager locationManager;
 
 	public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";
-	public static final String PREF_REQUESTED_PERM_LOCATION = "pref_requested_perm_location";
-	public static final String PREF_REQUESTED_PERM_STORAGE = "pref_requested_perm_location";
 
-	public static final int REQUEST_CODE_START_UPDATING = 0;
-	public static final int REQUEST_CODE_CREATE = 1;
-	public static final int REQUEST_CODE_FAB_PRESSED = 2;
-	public static final int REQUEST_CODE_SNACKBAR_PRESSED = 3;
+	public static final int REQUEST_CODE_CREATE = 0;
+	public static final int REQUEST_CODE_FAB_PRESSED = 1;
+	public static final int REQUEST_CODE_SNACKBAR_PRESSED = 2;
 
 	private TilesOverlay public_transport_overlay = null;
 	private TilesOverlay mapquest_overlay = null;
@@ -104,6 +103,15 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		updateOverlays();
 	}
 
+	protected void setupMapView() {
+		// Get map view and configure it.
+		map = (MapView) findViewById(R.id.map);
+		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
+		map.setBuiltInZoomControls(false);
+		map.setMultiTouchControls(true);
+		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+	}
+
 	protected void gotoLoc() throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
@@ -119,9 +127,6 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		final Location lastKnownLocationGps;
 		final Location lastKnownLocationNetwork;
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			requestLocationPermissions(REQUEST_CODE_START_UPDATING);
-		}
 		try {
 			if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
 				lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -213,36 +218,36 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)
-	protected void requestLocationPermissions(final int request_code) {
-		final boolean askedForLocationPerm = getPreferences().getBoolean(PREF_REQUESTED_PERM_LOCATION, false);
-		final boolean askedForStoragePerm = getPreferences().getBoolean(PREF_REQUESTED_PERM_STORAGE, false);
+	protected boolean hasLocationPermissions() {
+		return (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+				checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+	}
 
-		if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-				checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+	@TargetApi(Build.VERSION_CODES.M)
+	protected boolean hasStoragePermissions() {
+		return (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+				checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+	}
 
-			if (!askedForLocationPerm) {
-				requestPermissions(
-						new String[]{
-								Manifest.permission.ACCESS_FINE_LOCATION,
-								Manifest.permission.ACCESS_COARSE_LOCATION
-						},
-						request_code
-				);
-			}
-			getPreferences().edit().putBoolean(PREF_REQUESTED_PERM_LOCATION, false).apply();
+	@TargetApi(Build.VERSION_CODES.M)
+	protected void requestPermissions(final int request_code) {
+		if (!hasLocationPermissions()) {
+			requestPermissions(
+					new String[]{
+							Manifest.permission.ACCESS_FINE_LOCATION,
+							Manifest.permission.ACCESS_COARSE_LOCATION
+					},
+					request_code
+			);
 		}
-		if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-				checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-			if (!askedForStoragePerm) {
-				requestPermissions(
-						new String[]{
-								Manifest.permission.READ_EXTERNAL_STORAGE,
-								Manifest.permission.WRITE_EXTERNAL_STORAGE
-						},
-						request_code
-				);
-			}
-			getPreferences().edit().putBoolean(PREF_REQUESTED_PERM_STORAGE, false).apply();
+		if (!hasStoragePermissions()) {
+			requestPermissions(
+					new String[]{
+							Manifest.permission.READ_EXTERNAL_STORAGE,
+							Manifest.permission.WRITE_EXTERNAL_STORAGE
+					},
+					request_code
+			);
 		}
 	}
 
@@ -251,31 +256,42 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	                                       @NonNull final String[] permissions,
 	                                       @NonNull final int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		final SharedPreferences.Editor e = getPreferences().edit();
 		for (int i = 0; i < grantResults.length; i++) {
 			if (Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[i]) ||
 					Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[i])) {
 				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-					e.putBoolean(PREF_REQUESTED_PERM_LOCATION, false);
 					requestLocationUpdates();
-				} else {
-					e.putBoolean(PREF_REQUESTED_PERM_LOCATION, true);
-				}
-				continue;
-			}
-			if (Manifest.permission.READ_EXTERNAL_STORAGE.equals(permissions[i]) ||
-					Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permissions[i])) {
-				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-					e.putBoolean(PREF_REQUESTED_PERM_STORAGE, false);
-				} else {
-					e.putBoolean(PREF_REQUESTED_PERM_STORAGE, true);
 				}
 			}
 		}
-		e.apply();
 	}
 
 	protected SharedPreferences getPreferences() {
 		return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	}
+
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	private boolean isLocationEnabledKitkat() {
+		try {
+			final int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+			return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+		} catch( final Settings.SettingNotFoundException e ){
+			return false;
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private boolean isLocationEnabledLegacy() {
+		final String locationProviders = Settings.Secure.getString(getContentResolver(),
+				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		return !TextUtils.isEmpty(locationProviders);
+	}
+
+	protected boolean isLocationEnabled() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			return isLocationEnabledKitkat();
+		} else {
+			return isLocationEnabledLegacy();
+		}
 	}
 }

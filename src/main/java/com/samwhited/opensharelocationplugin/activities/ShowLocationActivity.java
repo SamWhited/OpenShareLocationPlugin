@@ -22,12 +22,10 @@ import com.samwhited.opensharelocationplugin.overlays.Marker;
 import com.samwhited.opensharelocationplugin.overlays.MyLocation;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
-import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 import com.samwhited.opensharelocationplugin.util.UriHelper;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -57,13 +55,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		}
 
 		setContentView(R.layout.activity_show_location);
-
-		// Get map view and configure it.
-		map = (MapView) findViewById(R.id.map);
-		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
-		map.setBuiltInZoomControls(false);
-		map.setMultiTouchControls(true);
-		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+		setupMapView();
 
 		this.mapController = map.getController();
 		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
@@ -80,12 +72,15 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 			});
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			requestLocationPermissions(REQUEST_CODE_CREATE);
-		} else {
-			updateDirectionsUi();
-			requestLocationUpdates();
+		// Ask for location permissions if location services are enabled and we're just starting the activity
+		// (we don't want to keep pestering them on every screen rotation or if there's no point because it's disabled
+		// anyways).
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null && isLocationEnabled()) {
+			requestPermissions(REQUEST_CODE_CREATE);
 		}
+
+		updateDirectionsUi();
+		requestLocationUpdates();
 	}
 
 	@Override

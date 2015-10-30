@@ -1,16 +1,11 @@
 package com.samwhited.opensharelocationplugin.activities;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,12 +19,10 @@ import com.samwhited.opensharelocationplugin.overlays.Marker;
 import com.samwhited.opensharelocationplugin.overlays.MyLocation;
 import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
-import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
@@ -70,13 +63,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_share_location);
-
-		// Get map view and configure it.
-		map = (MapView) findViewById(R.id.map);
-		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
-		map.setBuiltInZoomControls(false);
-		map.setMultiTouchControls(true);
-		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+		setupMapView();
 
 		this.mapController = map.getController();
 		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
@@ -101,10 +88,10 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 				if (isLocationEnabledAndAllowed()) {
 					updateLocationUi();
+				} else if (!hasLocationPermissions()) {
+					requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
 				} else if (!isLocationEnabled()) {
 					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-				} else if (!hasLocationPermissions()) {
-					requestLocationPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
 				}
 			}
 		});
@@ -146,15 +133,17 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 						if (!isLocationEnabled()) {
 							startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 						} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-							requestLocationPermissions(REQUEST_CODE_FAB_PRESSED);
+							requestPermissions(REQUEST_CODE_FAB_PRESSED);
 						}
 					}
 					toggleFixedLocation();
 				}
 			});
 		}
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			requestLocationPermissions(REQUEST_CODE_CREATE);
+
+		// Don't request permissions over and over if we rotated the screen
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null) {
+			requestPermissions(REQUEST_CODE_CREATE);
 		}
 
 		updateLocationUi();
@@ -166,6 +155,9 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	                                       @NonNull final String[] permissions,
 	                                       @NonNull final int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
+			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+		}
 		updateLocationUi();
 	}
 
@@ -252,36 +244,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	public void onProviderDisabled(final String provider) {
 
-	}
-
-	@TargetApi(Build.VERSION_CODES.KITKAT)
-	private boolean isLocationEnabledKitkat() {
-		try {
-			final int locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
-			return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-		} catch( final Settings.SettingNotFoundException e ){
-			return false;
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	private boolean isLocationEnabledLegacy() {
-		final String locationProviders = Settings.Secure.getString(getContentResolver(),
-				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-		return !TextUtils.isEmpty(locationProviders);
-	}
-
-	private boolean isLocationEnabled() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			return isLocationEnabledKitkat();
-		} else {
-			return isLocationEnabledLegacy();
-		}
-	}
-
-	@TargetApi(Build.VERSION_CODES.M)
-	protected boolean hasLocationPermissions() {
-		return checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 	}
 
 	private boolean isLocationEnabledAndAllowed() {
