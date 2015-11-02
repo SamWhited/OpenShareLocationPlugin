@@ -27,8 +27,7 @@ save battery where possible).
 
 ## Donate
 
-If you'd like to donate to this project, you can send bitcoin to:
-`1PYd7Koqd3ucSxKQRZQZRoB3qi7WaAFvL5` or use Flattr:
+If you'd like to donate to this project, you can use Flattr:
 
 [![Flattr this](https://button.flattr.com/flattr-badge-large.png)][flattrthis]
 
