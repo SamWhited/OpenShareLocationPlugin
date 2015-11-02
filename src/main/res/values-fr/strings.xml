@@ -12,7 +12,7 @@
 	<string name="action_directions">Navigation</string>
 	<string name="action_settings">Paramètres</string>
 
-	<string name="location_disabled">Le partage de la localisation est déactivé dans les paramètres.</string>
+	<string name="location_disabled">La localisation est désactivée</string>
 	<string name="enable">Activer</string>
 	<string name="cancel">Annuler</string>
 	<string name="share">Partager</string>
