@@ -18,4 +18,6 @@
 	<string name="share">Freigeben</string>
 
 	<string name="pref_tile_provider">Kartenanbieter</string>
+	<string name="pref_scale_tiles">Kacheln skalieren</string>
+	<string name="pref_scale_tiles_summary">Kacheln vergrößern für Sehschwäche oder Bildschirme mit hoher DPI</string>
 </resources>
