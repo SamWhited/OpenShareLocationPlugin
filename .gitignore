@@ -6,3 +6,4 @@ build/
 *.iml
 OpenShareLocationPlugin-*.apk
 gradle.properties
+src/main/assets

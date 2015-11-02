@@ -67,6 +67,21 @@ android {
     }
 }
 
+task copyAssets(type: Copy)
+copyAssets {
+    description = 'Copies asset files into the appropriate source directory'
+    from '.'
+    into 'src/main/assets/'
+    include('LICENSE')
+}
+
+preBuild.dependsOn(copyAssets)
+
+apply plugin: 'base'
+clean.doFirst({
+    delete('src/main/assets')
+})
+
 dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'org.osmdroid:osmdroid-android:4.3'
