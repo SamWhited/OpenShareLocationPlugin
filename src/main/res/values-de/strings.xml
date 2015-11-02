@@ -12,7 +12,7 @@
 	<string name="action_directions">Navigation</string>
 	<string name="action_settings">Einstellungen</string>
 
-	<string name="location_disabled">Standort-Freigabe ist in den Einstellungen deaktiviert</string>
+	<string name="location_disabled">Standort ist deaktiviert</string>
 	<string name="enable">Aktivieren</string>
 	<string name="cancel">Abbruch</string>
 	<string name="share">Freigeben</string>
