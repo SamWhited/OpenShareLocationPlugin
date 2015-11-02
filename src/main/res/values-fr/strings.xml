@@ -1,7 +1,7 @@
 <resources>
 	<string name="title_activity_share_location">Partager localisation</string>
 	<string name="title_activity_show_location">Montrer localisation</string>
-	<string name="title_activity_about">À propos de l'application</string>
+	<string name="title_activity_about">À propos de l’application</string>
 	<string name="title_activity_settings">Paramètres</string>
 
 	<string name="action_copy_location">Copier localisation</string>
