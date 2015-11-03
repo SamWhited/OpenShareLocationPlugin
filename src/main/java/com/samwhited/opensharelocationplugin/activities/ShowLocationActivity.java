@@ -192,12 +192,11 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	@Override
 	protected void updateLocationMarkers() {
 		super.updateLocationMarkers();
-		this.map.getOverlays().add(0, new Marker(this, this.loc));
-
 		if (myLoc != null) {
-			this.map.getOverlays().add(1, new MyLocation(this, this.myLoc));
-			this.map.invalidate();
+			this.map.getOverlays().add(new MyLocation(this, this.myLoc));
 		}
+
+		this.map.getOverlays().add(new Marker(this, this.loc));
 	}
 
 	@Override
