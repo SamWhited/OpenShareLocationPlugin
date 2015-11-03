@@ -27,9 +27,11 @@ import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
@@ -45,6 +47,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	public static final int REQUEST_CODE_FAB_PRESSED = 1;
 	public static final int REQUEST_CODE_SNACKBAR_PRESSED = 2;
 
+	protected static final String KEY_LOCATION = "loc";
 	protected static final String KEY_ZOOM_LEVEL = "zoom";
 
 	private TilesOverlay public_transport_overlay = null;
@@ -112,6 +115,11 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected void onSaveInstanceState(@NonNull final Bundle outState) {
 		super.onSaveInstanceState(outState);
 
+		final IGeoPoint center = map.getMapCenter();
+		outState.putParcelable(KEY_LOCATION, new GeoPoint(
+				center.getLatitude(),
+				center.getLongitude()
+		));
 		outState.putInt(KEY_ZOOM_LEVEL, map.getZoomLevel());
 	}
 
@@ -119,6 +127,9 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
+		if (savedInstanceState.containsKey(KEY_LOCATION)) {
+			mapController.setCenter((GeoPoint) savedInstanceState.getParcelable(KEY_LOCATION));
+		}
 		if (savedInstanceState.containsKey(KEY_ZOOM_LEVEL)) {
 			mapController.setZoom(savedInstanceState.getInt(KEY_ZOOM_LEVEL));
 		}
@@ -133,13 +144,11 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 	}
 
-	protected void gotoLoc() throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
+	protected void gotoLoc() {
+		gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL, true);
 	}
 
-	protected void gotoLoc(final boolean setZoomLevel, final boolean animate) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
+	protected abstract void gotoLoc(final boolean setZoomLevel, final boolean animate);
 
 	protected abstract void setMyLoc(final Location location);
 
@@ -179,11 +188,6 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		} catch (final SecurityException ignored) {
 			// This probably won't happen unless the user is on a ROM that allows permission tweaking.
 			// TODO: Should we do anything if that is the case?
-		}
-
-		try {
-			gotoLoc();
-		} catch (final UnsupportedOperationException ignored) {
 		}
 	}
 
@@ -228,14 +232,26 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		}
 	}
 
+	protected abstract void updateUi();
+
+	protected boolean mapAtInitialLoc() {
+		return map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL;
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		this.setMyLoc(null);
 		requestLocationUpdates();
 		updateOverlays();
+		updateLocationMarkers();
+		updateUi();
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+
+		if (mapAtInitialLoc()) {
+			gotoLoc();
+		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)

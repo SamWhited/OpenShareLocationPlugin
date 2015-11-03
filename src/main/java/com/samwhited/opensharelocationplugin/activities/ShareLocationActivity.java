@@ -29,14 +29,12 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	private boolean marker_fixed_to_loc = false;
 	private MenuItem toggle_fixed_location_item;
 
-	private static final String KEY_LOCATION = "loc";
 	private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
 
 	@Override
 	protected void onSaveInstanceState(@NonNull final Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putParcelable(KEY_LOCATION, this.myLoc);
 		outState.putBoolean(KEY_FIXED_TO_LOC, marker_fixed_to_loc);
 	}
 
@@ -44,12 +42,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
-		if (savedInstanceState.containsKey(KEY_LOCATION)) {
-			this.myLoc = savedInstanceState.getParcelable(KEY_LOCATION);
-		}
-
 		if (savedInstanceState.containsKey(KEY_FIXED_TO_LOC)) {
-			this.setFixedLocation(savedInstanceState.getBoolean(KEY_FIXED_TO_LOC));
+			this.marker_fixed_to_loc = savedInstanceState.getBoolean(KEY_FIXED_TO_LOC);
 		}
 	}
 
@@ -82,7 +76,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			public void onClick(final View view) {
 
 				if (isLocationEnabledAndAllowed()) {
-					updateLocationUi();
+					updateUi();
 				} else if (!hasLocationPermissions()) {
 					requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
 				} else if (!isLocationEnabled()) {
@@ -140,9 +134,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null) {
 			requestPermissions(REQUEST_CODE_CREATE);
 		}
-
-		updateLocationUi();
-		requestLocationUpdates();
 	}
 
 	@Override
@@ -153,7 +144,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		if (requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
 			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 		}
-		updateLocationUi();
+		updateUi();
 	}
 
 	@Override
@@ -171,11 +162,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	@Override
-	protected void gotoLoc() {
-		gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL, true);
-	}
-
-	@Override
 	protected void setMyLoc(final Location location) {
 		this.myLoc = location;
 	}
@@ -183,13 +169,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	protected void onPause() {
 		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		updateLocationUi();
-		updateLocationMarkers();
 	}
 
 	@Override
@@ -212,7 +191,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		if (this.myLoc == null) {
 			this.marker_fixed_to_loc = true;
 		}
-		updateLocationUi();
+		updateUi();
 		if (LocationHelper.isBetterLocation(location, this.myLoc)) {
 			final Location oldLoc = this.myLoc;
 			this.myLoc = location;
@@ -250,24 +229,21 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		getMenuInflater().inflate(R.menu.menu_share_location, menu);
 		super.setupMenuPrefs(menu);
 		this.toggle_fixed_location_item = menu.findItem(R.id.toggle_fixed_marker_button);
-		updateLocationUi();
+		updateUi();
 		return true;
 	}
 
 	private void toggleFixedLocation() {
-		setFixedLocation(!this.marker_fixed_to_loc);
-	}
-
-	private void setFixedLocation(final boolean marker_fixed_to_loc) {
-		this.marker_fixed_to_loc = isLocationEnabledAndAllowed() && marker_fixed_to_loc;
-		if (marker_fixed_to_loc) {
-			gotoLoc();
+		this.marker_fixed_to_loc = isLocationEnabledAndAllowed() && !this.marker_fixed_to_loc;
+		if (this.marker_fixed_to_loc) {
+			gotoLoc(false, true);
 		}
 		updateLocationMarkers();
-		updateLocationUi();
+		updateUi();
 	}
 
-	private void updateLocationUi() {
+	@Override
+	protected void updateUi() {
 		if (isLocationEnabledAndAllowed()) {
 			this.snackBar.setVisibility(View.GONE);
 		} else {

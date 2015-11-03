@@ -24,7 +24,6 @@ import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 import com.samwhited.opensharelocationplugin.util.UriHelper;
 
-import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.HashMap;
@@ -80,73 +79,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 			requestStoragePermissions(REQUEST_CODE_CREATE);
 		}
 
-		updateDirectionsUi();
-		requestLocationUpdates();
-	}
-
-	@Override
-	public void onRequestPermissionsResult(final int requestCode,
-	                                       @NonNull final String[] permissions,
-	                                       @NonNull final int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		updateDirectionsUi();
-	}
-
-	@Override
-	protected void setMyLoc(final Location location) {
-		this.myLoc = location;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_show_location, menu);
-
-		super.setupMenuPrefs(menu);
-
-		final MenuItem item = menu.findItem(R.id.action_share_location);
-		if (item.getActionProvider() != null && loc != null) {
-			final ShareActionProvider mShareActionProvider = (ShareActionProvider) item.getActionProvider();
-			final Intent shareIntent = new Intent();
-			shareIntent.setAction(Intent.ACTION_SEND);
-			shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
-			shareIntent.setType("text/plain");
-			mShareActionProvider.setShareIntent(shareIntent);
-		} else {
-			// This isn't really necessary, but while I was testing it was useful. Possibly remove it?
-			item.setVisible(false);
-		}
-
-		this.navigationMenuItem = menu.findItem(R.id.action_directions);
-
-		updateDirectionsUi();
-		return true;
-	}
-
-	@Override
-	protected void updateLocationMarkers() {
-		super.updateLocationMarkers();
-		this.map.getOverlays().add(0, new Marker(this, this.loc));
-
-		if (myLoc != null) {
-			this.map.getOverlays().add(1, new MyLocation(this, this.myLoc));
-			this.map.invalidate();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		updateDirectionsUi();
-
 		final Intent intent = getIntent();
-
-		boolean zoom = true;
 
 		if (intent != null) {
 			switch (intent.getAction()) {
@@ -169,7 +102,6 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 						if (z != null) {
 							try {
 								mapController.setZoom(Integer.valueOf(z));
-								zoom = false;
 							} catch (final Exception ignored) {
 							}
 						}
@@ -200,15 +132,77 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 					break;
 			}
-			if (this.mapController != null && this.loc != Config.INITIAL_POS) {
-				if (zoom) {
-					mapController.setZoom(Config.FINAL_ZOOM_LEVEL);
-				}
-				mapController.animateTo(this.loc);
+			updateLocationMarkers();
+		}
+	}
 
-				updateLocationMarkers();
+	@Override
+	protected void gotoLoc(final boolean setZoomLevel, final boolean animate) {
+		if (this.loc != null && mapController != null) {
+			if (setZoomLevel) {
+				mapController.setZoom(Config.FINAL_ZOOM_LEVEL);
+			}
+			if (animate) {
+				mapController.animateTo(new GeoPoint(this.loc));
+			} else {
+				mapController.setCenter(new GeoPoint(this.loc));
 			}
 		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode,
+	                                       @NonNull final String[] permissions,
+	                                       @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		updateUi();
+	}
+
+	@Override
+	protected void setMyLoc(final Location location) {
+		this.myLoc = location;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_show_location, menu);
+
+		super.setupMenuPrefs(menu);
+
+		final MenuItem item = menu.findItem(R.id.action_share_location);
+		if (item.getActionProvider() != null && loc != null) {
+			final ShareActionProvider mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+			final Intent shareIntent = new Intent();
+			shareIntent.setAction(Intent.ACTION_SEND);
+			shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
+			shareIntent.setType("text/plain");
+			mShareActionProvider.setShareIntent(shareIntent);
+		} else {
+			// This isn't really necessary, but while I was testing it was useful. Possibly remove it?
+			item.setVisible(false);
+		}
+
+		this.navigationMenuItem = menu.findItem(R.id.action_directions);
+
+		updateUi();
+		return true;
+	}
+
+	@Override
+	protected void updateLocationMarkers() {
+		super.updateLocationMarkers();
+		this.map.getOverlays().add(0, new Marker(this, this.loc));
+
+		if (myLoc != null) {
+			this.map.getOverlays().add(1, new MyLocation(this, this.myLoc));
+			this.map.invalidate();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
 	}
 
 	@Override
@@ -233,7 +227,8 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 						)));
 	}
 
-	private void updateDirectionsUi() {
+	@Override
+	protected void updateUi() {
 		final Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=0,0"));
 		final ComponentName component = i.resolveActivity(getPackageManager());
 		if (this.navigationButton != null) {
