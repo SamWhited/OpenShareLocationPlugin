@@ -21,19 +21,16 @@ import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 
 import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
 	private Location loc;
-	private IMapController mapController;
 	private RelativeLayout snackBar;
 	private boolean marker_fixed_to_loc = false;
 	private MenuItem toggle_fixed_location_item;
 
 	private static final String KEY_LOCATION = "loc";
-	private static final String KEY_ZOOM_LEVEL = "zoom";
 	private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
 
 	@Override
@@ -41,7 +38,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		super.onSaveInstanceState(outState);
 
 		outState.putParcelable(KEY_LOCATION, this.loc);
-		outState.putInt(KEY_ZOOM_LEVEL, map.getZoomLevel());
 		outState.putBoolean(KEY_FIXED_TO_LOC, marker_fixed_to_loc);
 	}
 
@@ -49,13 +45,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
-		if (savedInstanceState.containsKey(KEY_ZOOM_LEVEL)) {
-			mapController.setZoom(savedInstanceState.getInt(KEY_ZOOM_LEVEL));
-		}
-
 		if (savedInstanceState.containsKey(KEY_LOCATION)) {
 			this.loc = savedInstanceState.getParcelable(KEY_LOCATION);
-			gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL, false);
 		}
 
 		if (savedInstanceState.containsKey(KEY_FIXED_TO_LOC)) {

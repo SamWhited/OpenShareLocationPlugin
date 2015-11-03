@@ -27,6 +27,7 @@ import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
+import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.MapView;
@@ -43,10 +44,13 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	public static final int REQUEST_CODE_CREATE = 0;
 	public static final int REQUEST_CODE_FAB_PRESSED = 1;
 	public static final int REQUEST_CODE_SNACKBAR_PRESSED = 2;
-	
+
+	protected static final String KEY_ZOOM_LEVEL = "zoom";
+
 	private TilesOverlay public_transport_overlay = null;
 	private TilesOverlay mapquest_overlay = null;
 	protected MapView map = null;
+	protected IMapController mapController = null;
 
 	protected void updateOverlays() {
 		Log.d(Config.LOGTAG, "Updating overlays...");
@@ -101,6 +105,22 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		super.onCreate(savedInstanceState);
 		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		updateOverlays();
+	}
+
+	@Override
+	protected void onSaveInstanceState(@NonNull final Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putInt(KEY_ZOOM_LEVEL, map.getZoomLevel());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+
+		if (savedInstanceState.containsKey(KEY_ZOOM_LEVEL)) {
+			mapController.setZoom(savedInstanceState.getInt(KEY_ZOOM_LEVEL));
+		}
 	}
 
 	protected void setupMapView() {

@@ -24,7 +24,6 @@ import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 import com.samwhited.opensharelocationplugin.util.UriHelper;
 
-import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.HashMap;
@@ -36,7 +35,6 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 	private GeoPoint loc = Config.INITIAL_POS;
 	private Location myLoc = null;
-	private IMapController mapController;
 	private ImageButton navigationButton;
 	private MenuItem navigationMenuItem;
 
