@@ -34,6 +34,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 	private static final String KEY_LOCATION = "loc";
 	private static final String KEY_ZOOM_LEVEL = "zoom";
+	private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
 
 	@Override
 	protected void onSaveInstanceState(@NonNull final Bundle outState) {
@@ -41,20 +42,24 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 		outState.putParcelable(KEY_LOCATION, this.loc);
 		outState.putInt(KEY_ZOOM_LEVEL, map.getZoomLevel());
+		outState.putBoolean(KEY_FIXED_TO_LOC, marker_fixed_to_loc);
 	}
 
 	@Override
 	protected void onRestoreInstanceState(@NonNull final Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
+		if (savedInstanceState.containsKey(KEY_ZOOM_LEVEL)) {
+			mapController.setZoom(savedInstanceState.getInt(KEY_ZOOM_LEVEL));
+		}
+
 		if (savedInstanceState.containsKey(KEY_LOCATION)) {
 			this.loc = savedInstanceState.getParcelable(KEY_LOCATION);
-			if (savedInstanceState.containsKey(KEY_ZOOM_LEVEL)) {
-				mapController.setZoom(savedInstanceState.getInt(KEY_ZOOM_LEVEL));
-				gotoLoc(false, false);
-			} else {
-				gotoLoc(true, false);
-			}
+			gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL, false);
+		}
+
+		if (savedInstanceState.containsKey(KEY_FIXED_TO_LOC)) {
+			this.setFixedLocation(savedInstanceState.getBoolean(KEY_FIXED_TO_LOC));
 		}
 	}
 

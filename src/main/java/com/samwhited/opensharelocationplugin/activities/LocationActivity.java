@@ -43,7 +43,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	public static final int REQUEST_CODE_CREATE = 0;
 	public static final int REQUEST_CODE_FAB_PRESSED = 1;
 	public static final int REQUEST_CODE_SNACKBAR_PRESSED = 2;
-
+	
 	private TilesOverlay public_transport_overlay = null;
 	private TilesOverlay mapquest_overlay = null;
 	protected MapView map = null;
