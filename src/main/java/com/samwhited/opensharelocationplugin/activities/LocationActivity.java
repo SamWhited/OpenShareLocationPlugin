@@ -49,6 +49,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 
 	private TilesOverlay public_transport_overlay = null;
 	private TilesOverlay mapquest_overlay = null;
+	protected Location myLoc = null;
 	protected MapView map = null;
 	protected IMapController mapController = null;
 
@@ -140,7 +141,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 		throw new UnsupportedOperationException();
 	}
 
-	protected abstract void setLoc(final Location location);
+	protected abstract void setMyLoc(final Location location);
 
 	protected void requestLocationUpdates() {
 		Log.d(Config.LOGTAG, "Requesting location updates...");
@@ -152,7 +153,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 				lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 				if (lastKnownLocationGps != null) {
-					setLoc(lastKnownLocationGps);
+					setMyLoc(lastKnownLocationGps);
 				}
 				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
 						Config.LOCATION_FIX_SPACE_DELTA, this);
@@ -164,7 +165,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 				lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 				if (lastKnownLocationNetwork != null && LocationHelper.isBetterLocation(lastKnownLocationNetwork,
 						lastKnownLocationGps)) {
-					setLoc(lastKnownLocationNetwork);
+					setMyLoc(lastKnownLocationNetwork);
 				}
 				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_FIX_TIME_DELTA,
 						Config.LOCATION_FIX_SPACE_DELTA, this);
@@ -230,7 +231,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	@Override
 	protected void onResume() {
 		super.onResume();
-		this.setLoc(null);
+		this.setMyLoc(null);
 		requestLocationUpdates();
 		updateOverlays();
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));

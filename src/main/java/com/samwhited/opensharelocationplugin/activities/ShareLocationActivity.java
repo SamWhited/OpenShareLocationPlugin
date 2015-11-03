@@ -25,7 +25,6 @@ import org.osmdroid.util.GeoPoint;
 
 public class ShareLocationActivity extends LocationActivity implements LocationListener {
 
-	private Location loc;
 	private RelativeLayout snackBar;
 	private boolean marker_fixed_to_loc = false;
 	private MenuItem toggle_fixed_location_item;
@@ -37,7 +36,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void onSaveInstanceState(@NonNull final Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putParcelable(KEY_LOCATION, this.loc);
+		outState.putParcelable(KEY_LOCATION, this.myLoc);
 		outState.putBoolean(KEY_FIXED_TO_LOC, marker_fixed_to_loc);
 	}
 
@@ -46,7 +45,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		super.onRestoreInstanceState(savedInstanceState);
 
 		if (savedInstanceState.containsKey(KEY_LOCATION)) {
-			this.loc = savedInstanceState.getParcelable(KEY_LOCATION);
+			this.myLoc = savedInstanceState.getParcelable(KEY_LOCATION);
 		}
 
 		if (savedInstanceState.containsKey(KEY_FIXED_TO_LOC)) {
@@ -100,11 +99,11 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 				public void onClick(final View view) {
 					final Intent result = new Intent();
 
-					if (marker_fixed_to_loc && loc != null) {
-						result.putExtra("latitude", loc.getLatitude());
-						result.putExtra("longitude", loc.getLongitude());
-						result.putExtra("altitude", loc.getAltitude());
-						result.putExtra("accuracy", (int) loc.getAccuracy());
+					if (marker_fixed_to_loc && myLoc != null) {
+						result.putExtra("latitude", myLoc.getLatitude());
+						result.putExtra("longitude", myLoc.getLongitude());
+						result.putExtra("altitude", myLoc.getAltitude());
+						result.putExtra("accuracy", (int) myLoc.getAccuracy());
 					} else {
 						final IGeoPoint markerPoint = map.getMapCenter();
 						result.putExtra("latitude", markerPoint.getLatitude());
@@ -159,14 +158,14 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 	@Override
 	protected void gotoLoc(final boolean setZoomLevel, final boolean animate) {
-		if (this.loc != null && mapController != null) {
+		if (this.myLoc != null && mapController != null) {
 			if (setZoomLevel) {
 				mapController.setZoom(Config.FINAL_ZOOM_LEVEL);
 			}
 			if (animate) {
-				mapController.animateTo(new GeoPoint(this.loc));
+				mapController.animateTo(new GeoPoint(this.myLoc));
 			} else {
-				mapController.setCenter(new GeoPoint(this.loc));
+				mapController.setCenter(new GeoPoint(this.myLoc));
 			}
 		}
 	}
@@ -177,8 +176,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	@Override
-	protected void setLoc(final Location location) {
-		this.loc = location;
+	protected void setMyLoc(final Location location) {
+		this.myLoc = location;
 	}
 
 	@Override
@@ -196,10 +195,10 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	@Override
 	protected void updateLocationMarkers() {
 		super.updateLocationMarkers();
-		if (this.loc != null) {
-			this.map.getOverlays().add(new MyLocation(this, this.loc));
+		if (this.myLoc != null) {
+			this.map.getOverlays().add(new MyLocation(this, this.myLoc));
 			if (this.marker_fixed_to_loc) {
-				map.getOverlays().add(new Marker(this, new GeoPoint(this.loc)));
+				map.getOverlays().add(new Marker(this, new GeoPoint(this.myLoc)));
 			} else {
 				map.getOverlays().add(new Marker(this));
 			}
@@ -210,16 +209,16 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 	@Override
 	public void onLocationChanged(final Location location) {
-		if (this.loc == null) {
+		if (this.myLoc == null) {
 			this.marker_fixed_to_loc = true;
 		}
 		updateLocationUi();
-		if (LocationHelper.isBetterLocation(location, this.loc)) {
-			final Location oldLoc = this.loc;
-			this.loc = location;
+		if (LocationHelper.isBetterLocation(location, this.myLoc)) {
+			final Location oldLoc = this.myLoc;
+			this.myLoc = location;
 
 			// Don't jump back to the users location if they're not moving (more or less).
-			if (oldLoc == null || (this.marker_fixed_to_loc && this.loc.distanceTo(oldLoc) > 1)) {
+			if (oldLoc == null || (this.marker_fixed_to_loc && this.myLoc.distanceTo(oldLoc) > 1)) {
 				gotoLoc();
 			}
 

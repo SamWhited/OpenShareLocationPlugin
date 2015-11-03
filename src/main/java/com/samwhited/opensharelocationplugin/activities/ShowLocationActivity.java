@@ -24,6 +24,7 @@ import com.samwhited.opensharelocationplugin.util.Config;
 import com.samwhited.opensharelocationplugin.util.LocationHelper;
 import com.samwhited.opensharelocationplugin.util.UriHelper;
 
+import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.HashMap;
@@ -34,7 +35,6 @@ import java.util.regex.Pattern;
 public class ShowLocationActivity extends LocationActivity implements LocationListener {
 
 	private GeoPoint loc = Config.INITIAL_POS;
-	private Location myLoc = null;
 	private ImageButton navigationButton;
 	private MenuItem navigationMenuItem;
 
@@ -93,7 +93,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	}
 
 	@Override
-	protected void setLoc(final Location location) {
+	protected void setMyLoc(final Location location) {
 		this.myLoc = location;
 	}
 
