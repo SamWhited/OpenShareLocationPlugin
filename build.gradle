@@ -22,7 +22,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 7
-        versionName "2.0.1-beta"
+        versionName "2.0.1-beta2"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
