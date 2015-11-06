@@ -28,6 +28,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
     //
     // To sign release builds, create the file `gradle.properties` in
     // $HOME/.gradle or in your project directory with this content:
