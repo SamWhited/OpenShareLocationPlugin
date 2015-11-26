@@ -86,8 +86,7 @@ clean.doFirst({
 })
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'org.osmdroid:osmdroid-android:4.3'
-    compile 'org.slf4j:slf4j-simple:1.7.9'
-    compile 'com.android.support:support-v4:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'org.osmdroid:osmdroid-android:5.0.1@aar'
 }
