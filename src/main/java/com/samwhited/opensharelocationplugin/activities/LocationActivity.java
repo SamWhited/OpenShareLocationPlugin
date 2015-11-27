@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -30,13 +31,14 @@ import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
+import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.TilesOverlay;
 
-import java.util.Iterator;
+import java.io.File;
 
 public abstract class LocationActivity extends Activity implements LocationListener {
 	protected LocationManager locationManager;
@@ -137,6 +139,19 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	}
 
 	protected void setupMapView() {
+		// If osmand is installed, use its tile cache instead of creating our own.
+		final File f = new File(Environment.getExternalStorageDirectory() + "/osmand");
+		if (f.exists() && f.isDirectory() && f.canRead() && f.canWrite() && f.canExecute()) {
+			final File cache = new File(f, "tiles");
+			if (cache.exists() && cache.isDirectory() && cache.canRead() && cache.canWrite() && cache.canExecute()) {
+				Log.d(Config.LOGTAG, "Using osmand tile cache at: " + cache.getAbsolutePath());
+				OpenStreetMapTileProviderConstants.setCachePath(cache.getAbsolutePath());
+			}
+
+			Log.d(Config.LOGTAG, "Using osmand offline map cache at: " + f.getAbsolutePath());
+			OpenStreetMapTileProviderConstants.setOfflineMapsPath(f.getAbsolutePath());
+		}
+
 		// Get map view and configure it.
 		map = (MapView) findViewById(R.id.map);
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
