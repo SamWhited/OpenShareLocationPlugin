@@ -92,10 +92,11 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	}
 
 	protected void clearMarkers() {
-		for (final Iterator<Overlay> iterator = this.map.getOverlays().iterator(); iterator.hasNext(); ) {
-			final Overlay overlay = iterator.next();
-			if (overlay instanceof Marker || overlay instanceof MyLocation) {
-				iterator.remove();
+		synchronized (this.map.getOverlays()) {
+			for (final Overlay overlay : this.map.getOverlays()) {
+				if (overlay instanceof Marker || overlay instanceof MyLocation) {
+					this.map.getOverlays().remove(overlay);
+				}
 			}
 		}
 	}
