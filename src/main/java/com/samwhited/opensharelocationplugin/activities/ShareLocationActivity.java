@@ -77,7 +77,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 				if (isLocationEnabledAndAllowed()) {
 					updateUi();
-				} else if (!hasLocationPermissions()) {
+				} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
 					requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
 				} else if (!isLocationEnabled()) {
 					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
