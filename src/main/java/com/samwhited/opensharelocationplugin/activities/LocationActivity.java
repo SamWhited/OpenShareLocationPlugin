@@ -284,28 +284,11 @@ public abstract class LocationActivity extends Activity implements LocationListe
 
 	@TargetApi(Build.VERSION_CODES.M)
 	protected void requestPermissions(final int request_code) {
-		requestLocationPermissions(request_code);
-		requestStoragePermissions(request_code);
-	}
-
-	@TargetApi(Build.VERSION_CODES.M)
-	protected void requestLocationPermissions(final int request_code) {
-		if (!hasLocationPermissions()) {
+		if (!hasLocationPermissions() || !hasStoragePermissions()) {
 			requestPermissions(
 					new String[]{
 							Manifest.permission.ACCESS_FINE_LOCATION,
-							Manifest.permission.ACCESS_COARSE_LOCATION
-					},
-					request_code
-			);
-		}
-	}
-
-	@TargetApi(Build.VERSION_CODES.M)
-	protected void requestStoragePermissions(final int request_code) {
-		if (!hasStoragePermissions()) {
-			requestPermissions(
-					new String[]{
+							Manifest.permission.ACCESS_COARSE_LOCATION,
 							Manifest.permission.READ_EXTERNAL_STORAGE,
 							Manifest.permission.WRITE_EXTERNAL_STORAGE
 					},

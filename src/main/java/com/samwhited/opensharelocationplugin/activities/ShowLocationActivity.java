@@ -74,9 +74,9 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		// anyways).
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null) {
 			if (isLocationEnabled()) {
-				requestLocationPermissions(REQUEST_CODE_CREATE);
+				requestPermissions(REQUEST_CODE_CREATE);
 			}
-			requestStoragePermissions(REQUEST_CODE_CREATE);
+			requestPermissions(REQUEST_CODE_CREATE);
 		}
 
 		final Intent intent = getIntent();
