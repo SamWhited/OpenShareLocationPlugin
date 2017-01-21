@@ -57,7 +57,7 @@
       \n\nhttps://github.com/siacs/ShareLocationPlugin\n(GPL)
 
       \n\n\n<b>Maps</b>
-      \n\nMaps by Mapnik (http://mapnik.org)
+      \n\nMaps by Mapnik (http://mapnik.org), OpenMap (https://openmap.lt/),
       and Open Street Map (https://www.openstreetmap.org). Copyright restrictions may apply.
     </string>
     <string name="action_show_public_transport">Show public transport</string>

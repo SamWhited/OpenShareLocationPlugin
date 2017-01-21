@@ -12,6 +12,7 @@ require the Google Play Services to be installed.
  - [OSMDroid][osmdroid]
  - [Mapnik][mapnik]
  - [OpenStreetMap][osm]
+ - [OpenMap][openmap]
 
 ## Requirements
 
@@ -31,3 +32,4 @@ If you'd like to donate to this project, you can use Flattr:
 [flattrthis]: https://flattr.com/submit/auto?user_id=SamWhited&url=https%3A%2F%2Fbitbucket.org%2FSamWhited%2Fopensharelocationplugin
 [jellybean]: https://developer.android.com/about/versions/android-4.2.html
 [osm]: https://www.openstreetmap.org/
+[openmap]: https://openmap.lt/

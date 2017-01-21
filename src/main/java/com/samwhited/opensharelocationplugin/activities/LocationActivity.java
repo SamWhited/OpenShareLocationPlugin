@@ -47,7 +47,7 @@ import java.io.File;
 public abstract class LocationActivity extends Activity implements LocationListener {
 	public static final OnlineTileSourceBase PUBLIC_TRANSPORT = new XYTileSource(
 			"OSMPublicTransport", 0, 17, 256, ".png",
-			new String[] { "http://pt.openmap.lt/" },"© OpenStreetMap contributors");
+			new String[] { "http://pt.openmap.lt/" },"© OpenMap contributors");
 
 	protected LocationManager locationManager;
 
