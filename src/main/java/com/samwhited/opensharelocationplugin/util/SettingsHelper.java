@@ -1,19 +1,18 @@
 package com.samwhited.opensharelocationplugin.util;
 
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 
 public final class SettingsHelper {
 	public static OnlineTileSourceBase getTileProvider(final String provider_name) {
 		switch (provider_name) {
 			case "MAPNIK":
-				return TileSourceFactory.MAPNIK;
+				return Config.MAPNIK;
 			case "CYCLEMAP":
-				return TileSourceFactory.CYCLEMAP;
+				return Config.CYCLEMAP;
 			case "TOPOMAP":
-				return TileSourceFactory.OpenTopo;
+				return Config.TOPO;
 			default:
-				return TileSourceFactory.DEFAULT_TILE_SOURCE;
+				return Config.MAPNIK;
 		}
 	}
 }

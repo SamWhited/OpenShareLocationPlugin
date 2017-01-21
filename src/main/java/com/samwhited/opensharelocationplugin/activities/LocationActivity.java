@@ -35,8 +35,6 @@ import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.config.IConfigurationProvider;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
-import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
@@ -45,10 +43,6 @@ import org.osmdroid.views.overlay.TilesOverlay;
 import java.io.File;
 
 public abstract class LocationActivity extends Activity implements LocationListener {
-	public static final OnlineTileSourceBase PUBLIC_TRANSPORT = new XYTileSource(
-			"OSMPublicTransport", 0, 17, 256, ".png",
-			new String[] { "http://pt.openmap.lt/" },"© OpenMap contributors");
-
 	protected LocationManager locationManager;
 
 	public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";
@@ -77,7 +71,7 @@ protected Bitmap marker_icon;
 		if (getPreferences().getBoolean(LocationActivity.PREF_SHOW_PUBLIC_TRANSPORT, false)) {
 			if (this.public_transport_overlay == null) {
 				final MapTileProviderBasic tileProvider = new MapTileProviderBasic(getApplicationContext());
-				tileProvider.setTileSource(PUBLIC_TRANSPORT);
+				tileProvider.setTileSource(Config.PUBLIC_TRANSPORT);
 				this.public_transport_overlay = new TilesOverlay(tileProvider, getApplicationContext());
 			}
 			if (!map.getOverlays().contains(this.public_transport_overlay)) {
