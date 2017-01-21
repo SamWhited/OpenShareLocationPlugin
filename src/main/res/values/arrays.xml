@@ -3,5 +3,6 @@
     <string-array name="pref_tile_provider_values" translatable="false">
         <item>MAPNIK</item>
         <item>CYCLEMAP</item>
+        <item>TOPOMAP</item>
     </string-array>
 </resources>

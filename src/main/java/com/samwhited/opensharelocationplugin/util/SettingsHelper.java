@@ -10,6 +10,8 @@ public final class SettingsHelper {
 				return TileSourceFactory.MAPNIK;
 			case "CYCLEMAP":
 				return TileSourceFactory.CYCLEMAP;
+			case "TOPOMAP":
+				return TileSourceFactory.OpenTopo;
 			default:
 				return TileSourceFactory.DEFAULT_TILE_SOURCE;
 		}
