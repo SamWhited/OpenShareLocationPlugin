@@ -8,10 +8,6 @@ public final class SettingsHelper {
 		switch (provider_name) {
 			case "MAPNIK":
 				return TileSourceFactory.MAPNIK;
-			case "MAPQUESTOSM":
-				return TileSourceFactory.MAPQUESTOSM;
-			case "MAPQUESTAERIAL":
-				return TileSourceFactory.MAPQUESTAERIAL_US;
 			case "CYCLEMAP":
 				return TileSourceFactory.CYCLEMAP;
 			default:

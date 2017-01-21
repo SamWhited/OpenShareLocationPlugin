@@ -53,26 +53,16 @@ public abstract class LocationActivity extends Activity implements LocationListe
 	protected static final String KEY_ZOOM_LEVEL = "zoom";
 
 	private TilesOverlay public_transport_overlay = null;
-	private TilesOverlay mapquest_overlay = null;
 	protected Location myLoc = null;
 	protected MapView map = null;
 	protected IMapController mapController = null;
+
+protected Bitmap marker_icon;
 
 	protected void updateOverlays() {
 		Log.d(Config.LOGTAG, "Updating overlays...");
 		if (this.map == null) {
 			return;
-		}
-
-		// If we're using MapQuest Aerial view, overlay the (higher resolution) data if we're in the USA.
-		if (map.getTileProvider().getTileSource() == TileSourceFactory.MAPQUESTAERIAL_US &&
-				(mapquest_overlay == null || !map.getOverlays().contains(this.mapquest_overlay))) {
-			final MapTileProviderBasic tileProvider = new MapTileProviderBasic(getApplicationContext());
-			tileProvider.setTileSource(TileSourceFactory.MAPQUESTAERIAL);
-			this.mapquest_overlay = new TilesOverlay(tileProvider, getApplicationContext());
-			map.getOverlays().add(0, this.mapquest_overlay);
-		} else {
-			map.getOverlays().remove(this.mapquest_overlay);
 		}
 
 		if (map.getOverlays().contains(this.public_transport_overlay)) {
@@ -84,10 +74,7 @@ public abstract class LocationActivity extends Activity implements LocationListe
 				tileProvider.setTileSource(TileSourceFactory.PUBLIC_TRANSPORT);
 				this.public_transport_overlay = new TilesOverlay(tileProvider, getApplicationContext());
 			}
-			map.getOverlays().add(
-					map.getOverlays().contains(this.mapquest_overlay) ? 1 : 0,
-					this.public_transport_overlay
-			);
+			map.getOverlays().add(this.public_transport_overlay);
 		}
 
 		map.invalidate();

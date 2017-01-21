@@ -22,8 +22,6 @@
     <string name="pref_scale_tiles_summary">Scale tiles up for the hard of seeing or on high DPI displays</string>
     <string-array name="pref_tile_provider_titles" translatable="false">
         <item>Mapnik</item>
-        <item>Mapquest (OSM)</item>
-        <item>Mapquest Aerial</item>
         <item>Cycle Map</item>
     </string-array>
 
@@ -58,7 +56,7 @@
 		\n\nhttps://github.com/siacs/ShareLocationPlugin\n(GPL)
 
 		\n\n\n<b>Maps</b>
-		\n\nMaps by Mapnik (http://mapnik.org), MapQuest (http://open.mapquest.com),
+		\n\nMaps by Mapnik (http://mapnik.org)
 		and Open Street Map (https://www.openstreetmap.org). Copyright restrictions may apply.
 	</string>
     <string name="action_show_public_transport">Show public transport</string>
