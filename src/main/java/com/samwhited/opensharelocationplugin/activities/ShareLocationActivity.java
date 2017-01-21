@@ -1,6 +1,8 @@
 package com.samwhited.opensharelocationplugin.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
@@ -175,14 +177,14 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	protected void updateLocationMarkers() {
 		super.updateLocationMarkers();
 		if (this.myLoc != null) {
-			this.map.getOverlays().add(new MyLocation(this, this.myLoc));
+			this.map.getOverlays().add(new MyLocation(this, null, this.myLoc));
 			if (this.marker_fixed_to_loc) {
-				map.getOverlays().add(new Marker(this, new GeoPoint(this.myLoc)));
+				map.getOverlays().add(new Marker(marker_icon, new GeoPoint(this.myLoc)));
 			} else {
-				map.getOverlays().add(new Marker(this));
+				map.getOverlays().add(new Marker(marker_icon));
 			}
 		} else {
-			map.getOverlays().add(new Marker(this));
+			map.getOverlays().add(new Marker(marker_icon));
 		}
 	}
 

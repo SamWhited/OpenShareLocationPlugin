@@ -2,6 +2,7 @@ package com.samwhited.opensharelocationplugin.overlays;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -13,7 +14,7 @@ import com.samwhited.opensharelocationplugin.util.Config;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.SimpleLocationOverlay;
+import org.osmdroid.views.overlay.mylocation.SimpleLocationOverlay;
 
 import microsoft.mappoint.TileSystem;
 
@@ -36,8 +37,8 @@ public class MyLocation extends SimpleLocationOverlay {
 		return accent;
 	}
 
-	public MyLocation(final Context ctx, final Location position) {
-		super(ctx);
+	public MyLocation(final Context ctx, final Bitmap icon, final Location position) {
+		super(icon);
 		this.mapCenterPoint = new Point();
 		this.fill = new Paint(Paint.ANTI_ALIAS_FLAG);
 		final int accent = this.getColor(ctx);

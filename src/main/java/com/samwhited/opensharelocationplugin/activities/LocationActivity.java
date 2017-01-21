@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -30,8 +32,9 @@ import com.samwhited.opensharelocationplugin.util.SettingsHelper;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.config.IConfigurationProvider;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
-import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -98,6 +101,7 @@ protected Bitmap marker_icon;
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		this.marker_icon = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.marker);
 		updateOverlays();
 	}
 
@@ -130,13 +134,11 @@ protected Bitmap marker_icon;
 		final File f = new File(Environment.getExternalStorageDirectory() + "/osmand");
 		if (f.exists() && f.isDirectory() && f.canRead() && f.canWrite() && f.canExecute()) {
 			final File cache = new File(f, "tiles");
+			final IConfigurationProvider config = Configuration.getInstance();
 			if (cache.exists() && cache.isDirectory() && cache.canRead() && cache.canWrite() && cache.canExecute()) {
 				Log.d(Config.LOGTAG, "Using osmand tile cache at: " + cache.getAbsolutePath());
-				OpenStreetMapTileProviderConstants.setCachePath(cache.getAbsolutePath());
+				config.setOsmdroidTileCache(cache.getAbsoluteFile());
 			}
-
-			Log.d(Config.LOGTAG, "Using osmand offline map cache at: " + f.getAbsolutePath());
-			OpenStreetMapTileProviderConstants.setOfflineMapsPath(f.getAbsolutePath());
 		}
 
 		// Get map view and configure it.
@@ -215,7 +217,7 @@ protected Bitmap marker_icon;
 				if (item.isCheckable()) {
 					final boolean checked = !item.isChecked();
 					item.setChecked(checked);
-					getPreferences().edit().putBoolean(PREF_SHOW_PUBLIC_TRANSPORT, checked).commit();
+					getPreferences().edit().putBoolean(PREF_SHOW_PUBLIC_TRANSPORT, checked).apply();
 				}
 				updateOverlays();
 				return true;
