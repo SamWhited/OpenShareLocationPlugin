@@ -1,6 +1,5 @@
 # Open Share Location Plugin for Conversations
 
-[![Amazon App Store](https://images-na.ssl-images-amazon.com/images/G/01/AmazonMobileApps/amazon-apps-store-us-black.png)](https://www.amazon.com/gp/product/B015M1CBJO)
 [![Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.samwhited.opensharelocationplugin)
 
 This is a location sharing plugin for the XMPP client
