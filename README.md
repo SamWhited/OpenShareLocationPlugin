@@ -6,6 +6,13 @@ This is a location sharing plugin for the XMPP client
 [Conversations][conversations]. It uses data from Open Street Maps and doesn't
 require the Google Play Services to be installed.
 
+## Building
+
+Before building, first sign up for a [Thunderforest] account and get an API key.
+Then, edit or create the file `~/.gradle/gradle.properties` and add the key:
+
+    thunderforestAPIKey="abc"
+
 ## Open Source Services used:
 
  - [OSMDroid][osmdroid]
@@ -13,11 +20,7 @@ require the Google Play Services to be installed.
  - [OpenStreetMap][osm]
  - [OpenMap][openmap]
 
-## Requirements
-
- - Conversations ≥1.2.0
- - Android ≥4.2.x Jelly Bean ([API 17][jellybean])
-
+[Thunderforest]: http://www.thunderforest.com
 [conversations]: https://github.com/siacs/Conversations
 [osmdroid]: https://github.com/osmdroid/osmdroid
 [mapnik]: http://mapnik.org/

@@ -1,5 +1,8 @@
 package com.samwhited.opensharelocationplugin.util;
 
+import com.samwhited.opensharelocationplugin.BuildConfig;
+
+import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
@@ -21,11 +24,22 @@ public final class Config {
 			"https://a.tile.openstreetmap.org/",
 			"https://b.tile.openstreetmap.org/",
 			"https://c.tile.openstreetmap.org/" },"© OpenStreetMap contributors");
-	static final OnlineTileSourceBase CYCLEMAP = new XYTileSource("CycleMap",
-			0, 17, 256, ".png", new String[] {
-			"http://a.tile.opencyclemap.org/cycle/",
-			"http://b.tile.opencyclemap.org/cycle/",
-			"http://c.tile.opencyclemap.org/cycle/" }, "Maps © Thunderforest, Data © OpenStreetMap contributors.");
+	static final OnlineTileSourceBase CYCLEMAP = new OnlineTileSourceBase(
+			"CycleMap",
+			0, 22, 256,
+			".png",
+			new String[] {
+					"https://a.tile.thunderforest.com/cycle/",
+					"https://b.tile.thunderforest.com/cycle/",
+					"https://c.tile.thunderforest.com/cycle/",
+			},
+			"Maps © Thunderforest, Data © OpenStreetMap contributors.") {
+		@Override
+		public String getTileURLString(final MapTile aTile) {
+			return getBaseUrl() + aTile.getZoomLevel() + "/" + aTile.getX() + "/" + aTile.getY()
+					+ mImageFilenameEnding + "?apikey=" + BuildConfig.THUNDERFOREST_API_KEY;
+		}
+	};
 	static final OnlineTileSourceBase TOPO = TileSourceFactory.OpenTopo;
 	public static final OnlineTileSourceBase PUBLIC_TRANSPORT = new XYTileSource(
 			"OSMPublicTransport", 0, 17, 256, ".png",

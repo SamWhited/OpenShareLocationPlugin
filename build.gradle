@@ -59,6 +59,9 @@ android {
         buildTypes.debug.signingConfig = signingConfigs.release
     }
 
+    buildTypes.each{
+        it.buildConfigField 'String', 'THUNDERFOREST_API_KEY', thunderforestAPIKey
+    }
 }
 
 task copyAssets(type: Copy)
