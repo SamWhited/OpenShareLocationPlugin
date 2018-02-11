@@ -21,7 +21,7 @@
     <string name="pref_scale_tiles">Scale tiles</string>
     <string name="pref_scale_tiles_summary">Scale tiles up for the hard of seeing or on high DPI displays</string>
     <string-array name="pref_tile_provider_titles" translatable="false">
-        <item>Mapnik</item>
+        <item>OpenStreetMap</item>
         <item>Cycle Map</item>
         <item>Topographic Map</item>
     </string-array>

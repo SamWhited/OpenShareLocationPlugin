@@ -19,7 +19,7 @@ public final class Config {
 	public final static float LOCATION_FIX_SPACE_DELTA = 10; // m
 	final static int LOCATION_FIX_SIGNIFICANT_TIME_DELTA = 1000 * 60 * 2; // ms
 
-	static final OnlineTileSourceBase MAPNIK = new XYTileSource("Mapnik",
+	static final OnlineTileSourceBase OPEN_STREET_MAP = new XYTileSource("OpenStreetMap",
 			0, 19, 256, ".png", new String[] {
 			"https://a.tile.openstreetmap.org/",
 			"https://b.tile.openstreetmap.org/",
