@@ -1,8 +1,6 @@
 package com.samwhited.opensharelocationplugin.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
@@ -61,7 +59,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		mapController.setCenter(Config.INITIAL_POS);
 
 		// Setup the cancel button
-		final Button cancelButton = (Button) findViewById(R.id.cancel_button);
+		final Button cancelButton = findViewById(R.id.cancel_button);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
@@ -71,8 +69,8 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		});
 
 		// Setup the snackbar
-		this.snackBar = (RelativeLayout) findViewById(R.id.snackbar);
-		final TextView snackbarAction = (TextView) findViewById(R.id.snackbar_action);
+		this.snackBar = findViewById(R.id.snackbar);
+		final TextView snackbarAction = findViewById(R.id.snackbar_action);
 		snackbarAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
@@ -88,7 +86,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		});
 
 		// Setup the share button
-		final Button shareButton = (Button) findViewById(R.id.share_button);
+		final Button shareButton = findViewById(R.id.share_button);
 		if (shareButton != null) {
 			shareButton.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -116,7 +114,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			final ImageButton toggleFixedMarkerButton = (ImageButton) findViewById(R.id.toggle_fixed_marker_button);
+			final ImageButton toggleFixedMarkerButton = findViewById(R.id.toggle_fixed_marker_button);
 			toggleFixedMarkerButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View view) {
@@ -150,16 +148,12 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	@Override
-	protected void gotoLoc(final boolean setZoomLevel, final boolean animate) {
+	protected void gotoLoc(final boolean setZoomLevel) {
 		if (this.myLoc != null && mapController != null) {
 			if (setZoomLevel) {
 				mapController.setZoom(Config.FINAL_ZOOM_LEVEL);
 			}
-			if (animate) {
-				mapController.animateTo(new GeoPoint(this.myLoc));
-			} else {
-				mapController.setCenter(new GeoPoint(this.myLoc));
-			}
+			mapController.animateTo(new GeoPoint(this.myLoc));
 		}
 	}
 
@@ -238,7 +232,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	private void toggleFixedLocation() {
 		this.marker_fixed_to_loc = isLocationEnabledAndAllowed() && !this.marker_fixed_to_loc;
 		if (this.marker_fixed_to_loc) {
-			gotoLoc(false, true);
+			gotoLoc(false);
 		}
 		updateLocationMarkers();
 		updateUi();
@@ -253,7 +247,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		}
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			// Setup the fab button on v21+ devices
-			final ImageButton fab = (ImageButton) findViewById(R.id.toggle_fixed_marker_button);
+			final ImageButton fab = findViewById(R.id.toggle_fixed_marker_button);
 			if (isLocationEnabledAndAllowed()) {
 				fab.setVisibility(View.VISIBLE);
 				runOnUiThread(new Runnable() {

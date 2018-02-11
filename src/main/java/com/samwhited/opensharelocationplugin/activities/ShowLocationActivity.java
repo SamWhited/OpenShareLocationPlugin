@@ -60,7 +60,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			this.navigationButton = (ImageButton) findViewById(R.id.action_directions);
+			this.navigationButton = findViewById(R.id.action_directions);
 			this.navigationButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View view) {
@@ -80,7 +80,6 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		}
 
 		final Intent intent = getIntent();
-
 		if (intent != null) {
 			switch (intent.getAction()) {
 				case "eu.siacs.conversations.location.show":
@@ -137,16 +136,12 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	}
 
 	@Override
-	protected void gotoLoc(final boolean setZoomLevel, final boolean animate) {
+	protected void gotoLoc(final boolean setZoomLevel) {
 		if (this.loc != null && mapController != null) {
 			if (setZoomLevel) {
 				mapController.setZoom(Config.FINAL_ZOOM_LEVEL);
 			}
-			if (animate) {
-				mapController.animateTo(new GeoPoint(this.loc));
-			} else {
-				mapController.setCenter(new GeoPoint(this.loc));
-			}
+			mapController.animateTo(new GeoPoint(this.loc));
 		}
 	}
 
@@ -209,8 +204,10 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		switch (item.getItemId()) {
 			case R.id.action_copy_location:
 				final ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-				final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
-				clipboard.setPrimaryClip(clip);
+				if (clipboard != null) {
+					final ClipData clip = ClipData.newPlainText("location", createGeoUri().toString());
+					clipboard.setPrimaryClip(clip);
+				}
 				return true;
 			case R.id.action_directions:
 				startNavigation();

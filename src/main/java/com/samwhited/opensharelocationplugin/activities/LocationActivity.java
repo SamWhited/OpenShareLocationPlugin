@@ -143,7 +143,7 @@ protected Bitmap marker_icon;
 		}
 
 		// Get map view and configure it.
-		map = (MapView) findViewById(R.id.map);
+		map = findViewById(R.id.map);
 		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
@@ -151,10 +151,10 @@ protected Bitmap marker_icon;
 	}
 
 	protected void gotoLoc() {
-		gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL, true);
+		gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL);
 	}
 
-	protected abstract void gotoLoc(final boolean setZoomLevel, final boolean animate);
+	protected abstract void gotoLoc(final boolean setZoomLevel);
 
 	protected abstract void setMyLoc(final Location location);
 
