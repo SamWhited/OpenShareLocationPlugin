@@ -7,3 +7,4 @@ build/
 OpenShareLocationPlugin-*.apk
 gradle.properties
 src/main/assets
+release/
