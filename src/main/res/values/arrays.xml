@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="pref_tile_provider_values" translatable="false">
-        <item>MAPNIK</item>
+        <item>OPEN_STREET_MAP</item>
         <item>CYCLEMAP</item>
         <item>TOPOMAP</item>
     </string-array>
