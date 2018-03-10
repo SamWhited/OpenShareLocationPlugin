@@ -1,0 +1,24 @@
+<resources>
+    <string name="title_activity_share_location">Partajează locația</string>
+    <string name="title_activity_show_location">Arată locația</string>
+    <string name="title_activity_settings">Setări</string>
+    <string name="title_activity_about">Despre</string>
+
+    <string name="action_directions">Directions</string>
+    <string name="action_settings">Setări</string>
+    <string name="action_fix_to_location">Blochează poziția</string>
+    <string name="action_unfix_from_location">Deblochează poziția</string>
+    <string name="action_copy_location">Copiază locația</string>
+    <string name="action_share_location">Partajează locația</string>
+
+    <string name="location_disabled">Partajarea locației este dezactivată</string>
+    <string name="enable">Activează</string>
+    <string name="cancel">Anulează</string>
+    <string name="share">Partajare</string>
+
+    <string name="pref_tile_provider">Furnizor hartă</string>
+    <string name="pref_scale_tiles">Scalare hartă</string>
+    <string name="pref_scale_tiles_summary">Scalează mărimea hărții pentru cei cu deficiențe de vedere sau pentru ecranele dispozitivelor cu rezoluție mare</string>
+
+    <string name="action_show_public_transport">Arată transportul public</string>
+</resources>
