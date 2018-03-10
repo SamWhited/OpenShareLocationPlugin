@@ -42,6 +42,6 @@ public final class Config {
 	};
 	static final OnlineTileSourceBase TOPO = TileSourceFactory.OpenTopo;
 	public static final OnlineTileSourceBase PUBLIC_TRANSPORT = new XYTileSource(
-			"OSMPublicTransport", 0, 17, 256, ".png",
-			new String[] { "https://pt.openmap.lt/" },"© OpenMap contributors");
+			"PublicTransport", 0, 17, 256, ".png",
+			new String[] { "http://www.openptmap.org/tiles/" },"Data © OpenStreetMap contributors.");
 }
