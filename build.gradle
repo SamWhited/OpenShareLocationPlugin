@@ -9,6 +9,7 @@ buildscript {
 }
 allprojects {
     repositories {
+        mavenCentral()
         jcenter()
         google()
     }
@@ -23,8 +24,9 @@ android {
         applicationId "com.samwhited.opensharelocationplugin"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 13
-        versionName "2.3.1"
+        versionCode 14
+        versionName "2.3.2"
+        manifestPlaceholders = [apiKey:thunderforestAPIKey]
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -82,5 +84,5 @@ clean.doFirst({
 dependencies {
     compile 'com.android.support:appcompat-v7:27.1.0'
     compile 'com.android.support:support-v4:27.1.0'
-    compile 'org.osmdroid:osmdroid-android:5.6.5@aar'
+    compile 'org.osmdroid:osmdroid-android:6.0.1'
 }

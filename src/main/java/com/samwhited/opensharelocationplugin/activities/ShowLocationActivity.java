@@ -61,12 +61,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			this.navigationButton = findViewById(R.id.action_directions);
-			this.navigationButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(final View view) {
-					startNavigation();
-				}
-			});
+			this.navigationButton.setOnClickListener(view -> startNavigation());
 		}
 
 		// Ask for location permissions if location services are enabled and we're just starting the activity
@@ -81,7 +76,11 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 		final Intent intent = getIntent();
 		if (intent != null) {
-			switch (intent.getAction()) {
+			final String action = intent.getAction();
+			if (action == null) {
+				return;
+			}
+			switch (action) {
 				case "eu.siacs.conversations.location.show":
 					if (intent.hasExtra("longitude") && intent.hasExtra("latitude")) {
 						final double longitude = intent.getDoubleExtra("longitude", 0);
@@ -100,7 +99,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 						final String z = query.get("z");
 						if (z != null) {
 							try {
-								mapController.setZoom(Integer.valueOf(z));
+								mapController.setZoom(Double.valueOf(z));
 							} catch (final Exception ignored) {
 							}
 						}
@@ -147,10 +146,10 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 	@Override
 	public void onRequestPermissionsResult(final int requestCode,
-	                                       @NonNull final String[] permissions,
-	                                       @NonNull final int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		updateUi();
+			@NonNull final String[] permissions,
+			@NonNull final int[] grantResults) {
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+			updateUi();
 	}
 
 	@Override

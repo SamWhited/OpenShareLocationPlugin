@@ -115,7 +115,7 @@ protected Bitmap marker_icon;
 				center.getLatitude(),
 				center.getLongitude()
 		));
-		outState.putInt(KEY_ZOOM_LEVEL, map.getZoomLevel());
+		outState.putDouble(KEY_ZOOM_LEVEL, map.getZoomLevelDouble());
 	}
 
 	@Override
@@ -123,10 +123,10 @@ protected Bitmap marker_icon;
 		super.onRestoreInstanceState(savedInstanceState);
 
 		if (savedInstanceState.containsKey(KEY_LOCATION)) {
-			mapController.setCenter((GeoPoint) savedInstanceState.getParcelable(KEY_LOCATION));
+			mapController.setCenter(savedInstanceState.getParcelable(KEY_LOCATION));
 		}
 		if (savedInstanceState.containsKey(KEY_ZOOM_LEVEL)) {
-			mapController.setZoom(savedInstanceState.getInt(KEY_ZOOM_LEVEL));
+			mapController.setZoom(savedInstanceState.getDouble(KEY_ZOOM_LEVEL));
 		}
 	}
 
@@ -144,14 +144,14 @@ protected Bitmap marker_icon;
 
 		// Get map view and configure it.
 		map = findViewById(R.id.map);
-		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
+		map.setTileSource(SettingsHelper.getTileProvider(getApplicationContext(), getPreferences().getString("tile_provider", "OPEN_STREET_MAP")));
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
 		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 	}
 
 	protected void gotoLoc() {
-		gotoLoc(map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL);
+		gotoLoc(map.getZoomLevelDouble() == Config.INITIAL_ZOOM_LEVEL);
 	}
 
 	protected abstract void gotoLoc(final boolean setZoomLevel);
@@ -241,7 +241,7 @@ protected Bitmap marker_icon;
 	protected abstract void updateUi();
 
 	protected boolean mapAtInitialLoc() {
-		return map.getZoomLevel() == Config.INITIAL_ZOOM_LEVEL;
+		return map.getZoomLevelDouble() == Config.INITIAL_ZOOM_LEVEL;
 	}
 
 	@Override
@@ -252,7 +252,7 @@ protected Bitmap marker_icon;
 		updateOverlays();
 		updateLocationMarkers();
 		updateUi();
-		map.setTileSource(SettingsHelper.getTileProvider(getPreferences().getString("tile_provider", "MAPNIK")));
+		map.setTileSource(SettingsHelper.getTileProvider(getApplicationContext(), getPreferences().getString("tile_provider", "OPEN_STREET_MAP")));
 		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
 
 		if (mapAtInitialLoc()) {

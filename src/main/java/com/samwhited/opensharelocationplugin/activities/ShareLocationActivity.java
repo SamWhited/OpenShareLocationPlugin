@@ -60,53 +60,43 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 		// Setup the cancel button
 		final Button cancelButton = findViewById(R.id.cancel_button);
-		cancelButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-				setResult(RESULT_CANCELED);
-				finish();
-			}
+		cancelButton.setOnClickListener(view -> {
+			setResult(RESULT_CANCELED);
+			finish();
 		});
 
 		// Setup the snackbar
 		this.snackBar = findViewById(R.id.snackbar);
 		final TextView snackbarAction = findViewById(R.id.snackbar_action);
-		snackbarAction.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-
-				if (isLocationEnabledAndAllowed()) {
-					updateUi();
-				} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
-					requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
-				} else if (!isLocationEnabled()) {
-					startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-				}
+		snackbarAction.setOnClickListener(view -> {
+			if (isLocationEnabledAndAllowed()) {
+				updateUi();
+			} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !hasLocationPermissions()) {
+				requestPermissions(REQUEST_CODE_SNACKBAR_PRESSED);
+			} else if (!isLocationEnabled()) {
+				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 			}
 		});
 
 		// Setup the share button
 		final Button shareButton = findViewById(R.id.share_button);
 		if (shareButton != null) {
-			shareButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(final View view) {
-					final Intent result = new Intent();
+			shareButton.setOnClickListener(view -> {
+				final Intent result = new Intent();
 
-					if (marker_fixed_to_loc && myLoc != null) {
-						result.putExtra("latitude", myLoc.getLatitude());
-						result.putExtra("longitude", myLoc.getLongitude());
-						result.putExtra("altitude", myLoc.getAltitude());
-						result.putExtra("accuracy", (int) myLoc.getAccuracy());
-					} else {
-						final IGeoPoint markerPoint = map.getMapCenter();
-						result.putExtra("latitude", markerPoint.getLatitude());
-						result.putExtra("longitude", markerPoint.getLongitude());
-					}
-
-					setResult(RESULT_OK, result);
-					finish();
+				if (marker_fixed_to_loc && myLoc != null) {
+					result.putExtra("latitude", myLoc.getLatitude());
+					result.putExtra("longitude", myLoc.getLongitude());
+					result.putExtra("altitude", myLoc.getAltitude());
+					result.putExtra("accuracy", (int) myLoc.getAccuracy());
+				} else {
+					final IGeoPoint markerPoint = map.getMapCenter();
+					result.putExtra("latitude", markerPoint.getLatitude());
+					result.putExtra("longitude", markerPoint.getLongitude());
 				}
+
+				setResult(RESULT_OK, result);
+				finish();
 			});
 		}
 
@@ -115,18 +105,15 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			final ImageButton toggleFixedMarkerButton = findViewById(R.id.toggle_fixed_marker_button);
-			toggleFixedMarkerButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(final View view) {
-					if (!marker_fixed_to_loc) {
-						if (!isLocationEnabled()) {
-							startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-						} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-							requestPermissions(REQUEST_CODE_FAB_PRESSED);
-						}
+			toggleFixedMarkerButton.setOnClickListener(view -> {
+				if (!marker_fixed_to_loc) {
+					if (!isLocationEnabled()) {
+						startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+					} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+						requestPermissions(REQUEST_CODE_FAB_PRESSED);
 					}
-					toggleFixedLocation();
 				}
+				toggleFixedLocation();
 			});
 		}
 
@@ -138,13 +125,13 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 	@Override
 	public void onRequestPermissionsResult(final int requestCode,
-	                                       @NonNull final String[] permissions,
-	                                       @NonNull final int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
-			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-		}
-		updateUi();
+			@NonNull final String[] permissions,
+			@NonNull final int[] grantResults) {
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+			if (requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
+				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+			}
+			updateUi();
 	}
 
 	@Override
@@ -250,16 +237,13 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			final ImageButton fab = findViewById(R.id.toggle_fixed_marker_button);
 			if (isLocationEnabledAndAllowed()) {
 				fab.setVisibility(View.VISIBLE);
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
-								R.drawable.ic_gps_not_fixed_white_24dp);
-						fab.setContentDescription(getResources().getString(
-									marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
-									));
-						fab.invalidate();
-					}
+				runOnUiThread(() -> {
+					fab.setImageResource(marker_fixed_to_loc ? R.drawable.ic_gps_fixed_white_24dp :
+							R.drawable.ic_gps_not_fixed_white_24dp);
+					fab.setContentDescription(getResources().getString(
+								marker_fixed_to_loc ? R.string.action_unfix_from_location : R.string.action_fix_to_location
+								));
+					fab.invalidate();
 				});
 			} else {
 				fab.setVisibility(View.GONE);
@@ -269,16 +253,13 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			if (isLocationEnabledAndAllowed()) {
 				if (toggle_fixed_location_item != null) {
 					toggle_fixed_location_item.setVisible(true);
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							toggle_fixed_location_item.setIcon(marker_fixed_to_loc ?
-									R.drawable.ic_gps_fixed_white_24dp : R.drawable.ic_gps_not_fixed_white_24dp
-									);
-							toggle_fixed_location_item.setTitle(marker_fixed_to_loc ?
-									R.string.action_unfix_from_location : R.string.action_fix_to_location
-									);
-						}
+					runOnUiThread(() -> {
+						toggle_fixed_location_item.setIcon(marker_fixed_to_loc ?
+								R.drawable.ic_gps_fixed_white_24dp : R.drawable.ic_gps_not_fixed_white_24dp
+								);
+						toggle_fixed_location_item.setTitle(marker_fixed_to_loc ?
+								R.string.action_unfix_from_location : R.string.action_fix_to_location
+								);
 					});
 				}
 			} else {

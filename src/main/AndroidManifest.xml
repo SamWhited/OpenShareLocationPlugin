@@ -19,6 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/ConversationsTheme"
         tools:ignore="UnusedAttribute">
+        <meta-data android:name="THUNDERFOREST_MAPID" android:value="${apiKey}" />
         <activity
             android:name=".activities.ShareLocationActivity"
             android:label="@string/title_activity_share_location" >
