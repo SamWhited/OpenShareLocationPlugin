@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <resources>
     <string name="title_activity_share_location">Sdílet umístění</string>
     <string name="title_activity_show_location">Zobrazit umístění</string>
@@ -22,5 +21,4 @@
     <string name="pref_scale_tiles_summary">Zvětšit mapu pro lepší čitelnost a na displejích s vysokým rozlišením</string>
 
     <string name="action_show_public_transport">Zobrazit veřejnou dopravu</string>
-
 </resources>
