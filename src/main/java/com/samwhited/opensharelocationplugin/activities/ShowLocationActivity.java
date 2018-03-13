@@ -11,11 +11,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ShareActionProvider;
 
 import com.samwhited.opensharelocationplugin.R;
 import com.samwhited.opensharelocationplugin.overlays.Marker;
@@ -165,16 +166,18 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		super.setupMenuPrefs(menu);
 
 		final MenuItem item = menu.findItem(R.id.action_share_location);
-		if (item.getActionProvider() != null && loc != null) {
-			final ShareActionProvider mShareActionProvider = (ShareActionProvider) item.getActionProvider();
-			final Intent shareIntent = new Intent();
-			shareIntent.setAction(Intent.ACTION_SEND);
-			shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
-			shareIntent.setType("text/plain");
-			mShareActionProvider.setShareIntent(shareIntent);
-		} else {
-			// This isn't really necessary, but while I was testing it was useful. Possibly remove it?
-			item.setVisible(false);
+		if (item != null) {
+			final ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+			if (mShareActionProvider != null && loc != null) {
+				final Intent shareIntent = new Intent();
+				shareIntent.setAction(Intent.ACTION_SEND);
+				shareIntent.putExtra(Intent.EXTRA_TEXT, createGeoUri().toString());
+				shareIntent.setType("text/plain");
+				mShareActionProvider.setShareIntent(shareIntent);
+			} else {
+				// This isn't really necessary, but while I was testing it was useful. Possibly remove it?
+				item.setVisible(false);
+			}
 		}
 
 		this.navigationMenuItem = menu.findItem(R.id.action_directions);

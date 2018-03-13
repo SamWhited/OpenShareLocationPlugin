@@ -2,7 +2,6 @@ package com.samwhited.opensharelocationplugin.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +17,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -42,7 +42,7 @@ import org.osmdroid.views.overlay.TilesOverlay;
 
 import java.io.File;
 
-public abstract class LocationActivity extends Activity implements LocationListener {
+public abstract class LocationActivity extends AppCompatActivity implements LocationListener {
 	protected LocationManager locationManager;
 
 	public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";

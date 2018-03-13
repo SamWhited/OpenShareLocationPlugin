@@ -124,9 +124,11 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	}
 
 	@Override
-	public void onRequestPermissionsResult(final int requestCode,
+	public void onRequestPermissionsResult(
+			final int requestCode,
 			@NonNull final String[] permissions,
-			@NonNull final int[] grantResults) {
+			@NonNull final int[] grantResults
+	) {
 			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 			if (requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
 				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));

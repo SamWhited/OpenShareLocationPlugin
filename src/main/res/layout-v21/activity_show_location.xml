@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.samwhited.opensharelocationplugin.activities.ShowLocationActivity">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.samwhited.opensharelocationplugin.activities.ShowLocationActivity">
     <org.osmdroid.views.MapView android:id="@+id/map"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"/>
-
-    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/action_directions"
-        android:layout_width="@dimen/fab_button_diameter"
-        android:layout_height="@dimen/fab_button_diameter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/fab_button_margin"
-        android:layout_marginEnd="@dimen/fab_button_margin"
-        android:src="@drawable/ic_directions_white_24dp"
-        android:contentDescription="@string/action_directions"
-        android:tint="@android:color/white"
-        android:outlineProvider="background"
-        android:background="@drawable/fab"
-        android:elevation="10dp"
-        android:translationZ="10dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        tools:ignore="InconsistentLayout"/>
+        android:src="@drawable/ic_directions_white_24dp"
+        android:tint="@android:color/white"
+        android:layout_margin="16dp"
+        android:background="@color/accent"
+        android:contentDescription="@string/action_directions"/>
 </RelativeLayout>

@@ -3,7 +3,7 @@
     <!--
     Resource copied from Conversations and the official Location sharing plugin by iNPUTmice.
     -->
-    <style name="ConversationsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+    <style name="ConversationsTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primarydark</item>
         <item name="android:colorAccent">@color/accent</item>
@@ -11,7 +11,14 @@
         <item name="TextSizeInfo">12sp</item>
         <item name="TextSizeBody">14sp</item>
         <item name="TextSizeHeadline">20sp</item>
-
     </style>
-
+    <style name="ConversationsActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primarydark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:background">@color/primary</item>
+        <item name="android:backgroundStacked">@color/primarydark</item>
+        <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
+        <item name="android:icon">@android:color/transparent</item>
+    </style>
 </resources>

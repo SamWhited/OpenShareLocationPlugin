@@ -81,8 +81,13 @@ clean.doFirst({
     delete('src/main/assets')
 })
 
+ext {
+    supportLibVersion = '27.1.0'
+}
+
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:support-v4:27.1.0'
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:support-v4:$supportLibVersion"
+    implementation "com.android.support:design:$supportLibVersion"
     implementation 'org.osmdroid:osmdroid-android:6.0.1'
 }

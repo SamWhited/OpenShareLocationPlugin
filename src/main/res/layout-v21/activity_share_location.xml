@@ -1,13 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.samwhited.opensharelocationplugin.activities.ShareLocationActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.samwhited.opensharelocationplugin.activities.ShareLocationActivity">
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/button_bar">
     <org.osmdroid.views.MapView android:id="@+id/map"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_above="@+id/button_bar" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/toggle_fixed_marker_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_gps_fixed_white_24dp"
+        android:tint="@android:color/white"
+        android:layout_margin="16dp"
+        android:background="@color/accent"
+        android:contentDescription="@string/action_unfix_from_location"/>
+    </FrameLayout>
 
     <!-- Parts of this resource are copied from the official location sharing plugin by iNPUTmice -->
     <RelativeLayout
@@ -85,23 +100,4 @@
             android:text="@string/share"
             android:textColor="@color/primarytext" />
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/toggle_fixed_marker_button"
-        android:layout_width="@dimen/fab_button_diameter"
-        android:layout_height="@dimen/fab_button_diameter"
-        android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/fab_button_margin"
-        android:layout_marginEnd="@dimen/fab_button_margin"
-        android:src="@drawable/ic_gps_fixed_white_24dp"
-        android:contentDescription="@string/action_unfix_from_location"
-        android:tint="@android:color/white"
-        android:outlineProvider="background"
-        android:background="@drawable/fab"
-        android:elevation="10dp"
-        android:translationZ="10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@id/snackbar"
-        tools:ignore="InconsistentLayout"/>
-
 </RelativeLayout>
