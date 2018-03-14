@@ -1,6 +1,8 @@
 package com.samwhited.opensharelocationplugin.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
@@ -30,6 +32,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 	private MenuItem toggle_fixed_location_item;
 
 	private static final String KEY_FIXED_TO_LOC = "fixed_to_loc";
+	private Boolean noAskAgain = false;
 
 	@Override
 	protected void onSaveInstanceState(@NonNull final Bundle outState) {
@@ -129,11 +132,25 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 			@NonNull final String[] permissions,
 			@NonNull final int[] grantResults
 	) {
-			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-			if (requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
-				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-			}
-			updateUi();
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if (grantResults.length > 0 &&
+				grantResults[0] != PackageManager.PERMISSION_GRANTED &&
+				Build.VERSION.SDK_INT >= 23 &&
+				permissions.length > 0 &&
+				(
+						Manifest.permission.LOCATION_HARDWARE.equals(permissions[0]) ||
+								Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[0]) ||
+								Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])
+				) &&
+				!shouldShowRequestPermissionRationale(permissions[0])) {
+			noAskAgain = true;
+		}
+
+		if (!noAskAgain && requestCode == REQUEST_CODE_SNACKBAR_PRESSED && !isLocationEnabled() && hasLocationPermissions()) {
+			startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+		}
+		updateUi();
 	}
 
 	@Override
@@ -229,7 +246,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 
 	@Override
 	protected void updateUi() {
-		if (isLocationEnabledAndAllowed()) {
+		if (noAskAgain || isLocationEnabledAndAllowed()) {
 			this.snackBar.setVisibility(View.GONE);
 		} else {
 			this.snackBar.setVisibility(View.VISIBLE);
