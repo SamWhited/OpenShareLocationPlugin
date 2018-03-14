@@ -24,8 +24,8 @@ android {
         applicationId "com.samwhited.opensharelocationplugin"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 14
-        versionName "2.3.2"
+        versionCode 15
+        versionName "2.4.0"
         manifestPlaceholders = [apiKey:thunderforestAPIKey]
     }
     compileOptions {
