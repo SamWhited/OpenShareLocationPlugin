@@ -114,8 +114,7 @@ protected Bitmap marker_icon;
 		final IConfigurationProvider config = Configuration.getInstance();
 		config.load(ctx, getPreferences());
 
-		// If osmand is installed, use its tile cache instead of creating our own.
-		final File f = new File(getApplicationInfo().dataDir + "/tiles");
+		final File f = new File(getApplicationContext().getCacheDir()+ "/tiles");
 		try {
 			//noinspection ResultOfMethodCallIgnored
 			f.mkdirs();
