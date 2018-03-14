@@ -13,7 +13,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -116,14 +115,14 @@ protected Bitmap marker_icon;
 		config.load(ctx, getPreferences());
 
 		// If osmand is installed, use its tile cache instead of creating our own.
-		final File f = new File(Environment.getExternalStorageDirectory() + "/osmdroid/tiles");
+		final File f = new File(getApplicationInfo().dataDir + "/tiles");
 		try {
 			//noinspection ResultOfMethodCallIgnored
 			f.mkdirs();
 		} catch (final SecurityException ignored) {
 		}
-		if (f.exists() && f.isDirectory() && f.canRead() && f.canWrite() && f.canExecute()) {
-			Log.d(Config.LOGTAG, "Using osmdroid tile cache at: " + f.getAbsolutePath());
+		if (f.exists() && f.isDirectory() && f.canRead() && f.canWrite()) {
+			Log.d(Config.LOGTAG, "Setting tile cache at: " + f.getAbsolutePath());
 			config.setOsmdroidTileCache(f.getAbsoluteFile());
 		}
 
@@ -298,8 +297,6 @@ protected Bitmap marker_icon;
 					new String[]{
 							Manifest.permission.ACCESS_FINE_LOCATION,
 							Manifest.permission.ACCESS_COARSE_LOCATION,
-							Manifest.permission.READ_EXTERNAL_STORAGE,
-							Manifest.permission.WRITE_EXTERNAL_STORAGE
 					},
 					request_code
 			);
