@@ -119,11 +119,6 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 				toggleFixedLocation();
 			});
 		}
-
-		// Don't request permissions over and over if we rotated the screen
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null) {
-			requestPermissions(REQUEST_CODE_CREATE);
-		}
 	}
 
 	@Override

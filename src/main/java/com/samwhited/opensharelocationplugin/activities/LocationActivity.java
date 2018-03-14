@@ -101,8 +101,34 @@ protected Bitmap marker_icon;
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Ask for location permissions if location services are enabled and we're just starting the activity
+		// (we don't want to keep pestering them on every screen rotation or if there's no point because it's disabled
+		// anyways).
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && savedInstanceState == null) {
+			if (isLocationEnabled()) {
+				requestPermissions(REQUEST_CODE_CREATE);
+			}
+		}
+
+		final Context ctx = getApplicationContext();
+		final IConfigurationProvider config = Configuration.getInstance();
+		config.load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+
+		// If osmand is installed, use its tile cache instead of creating our own.
+		final File f = new File(Environment.getExternalStorageDirectory() + "/osmdroid/tiles");
+		try {
+			//noinspection ResultOfMethodCallIgnored
+			f.mkdirs();
+		} catch (final SecurityException ignored) {
+		}
+		if (f.exists() && f.isDirectory() && f.canRead() && f.canWrite() && f.canExecute()) {
+			Log.d(Config.LOGTAG, "Using osmdroid tile cache at: " + f.getAbsolutePath());
+			config.setOsmdroidTileCache(f.getAbsoluteFile());
+		}
+
 		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		this.marker_icon = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.marker);
+		this.marker_icon = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.marker);
 		updateOverlays();
 	}
 
@@ -131,17 +157,6 @@ protected Bitmap marker_icon;
 	}
 
 	protected void setupMapView() {
-		// If osmand is installed, use its tile cache instead of creating our own.
-		final File f = new File(Environment.getExternalStorageDirectory() + "/osmand");
-		if (f.exists() && f.isDirectory() && f.canRead() && f.canWrite() && f.canExecute()) {
-			final File cache = new File(f, "tiles");
-			final IConfigurationProvider config = Configuration.getInstance();
-			if (cache.exists() && cache.isDirectory() && cache.canRead() && cache.canWrite() && cache.canExecute()) {
-				Log.d(Config.LOGTAG, "Using osmand tile cache at: " + cache.getAbsolutePath());
-				config.setOsmdroidTileCache(cache.getAbsoluteFile());
-			}
-		}
-
 		// Get map view and configure it.
 		map = findViewById(R.id.map);
 		map.setTileSource(SettingsHelper.getTileProvider(getApplicationContext(), getPreferences().getString("tile_provider", "OPEN_STREET_MAP")));
