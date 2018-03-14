@@ -284,14 +284,8 @@ protected Bitmap marker_icon;
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)
-	protected boolean hasStoragePermissions() {
-		return (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-				checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-	}
-
-	@TargetApi(Build.VERSION_CODES.M)
 	protected void requestPermissions(final int request_code) {
-		if (!hasLocationPermissions() || !hasStoragePermissions()) {
+		if (!hasLocationPermissions()) {
 			requestPermissions(
 					new String[]{
 							Manifest.permission.ACCESS_FINE_LOCATION,
