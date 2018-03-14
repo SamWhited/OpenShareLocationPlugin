@@ -113,7 +113,7 @@ protected Bitmap marker_icon;
 
 		final Context ctx = getApplicationContext();
 		final IConfigurationProvider config = Configuration.getInstance();
-		config.load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+		config.load(ctx, getPreferences());
 
 		// If osmand is installed, use its tile cache instead of creating our own.
 		final File f = new File(Environment.getExternalStorageDirectory() + "/osmdroid/tiles");
@@ -247,6 +247,8 @@ protected Bitmap marker_icon;
 	@Override
 	protected void onPause() {
 		super.onPause();
+		Configuration.getInstance().save(this, getPreferences());
+		map.onPause();
 		try {
 			pauseLocationUpdates();
 		} catch (final SecurityException ignored) {
@@ -262,6 +264,8 @@ protected Bitmap marker_icon;
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Configuration.getInstance().load(this, getPreferences());
+		map.onResume();
 		this.setMyLoc(null);
 		requestLocationUpdates();
 		updateOverlays();
