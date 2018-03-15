@@ -13,7 +13,7 @@ require the Google Play Services to be installed.
 Before building, first sign up for a [Thunderforest] account and get an API key.
 Then, edit or create the file `~/.gradle/gradle.properties` and add the key:
 
-    thunderforestAPIKey="abc"
+    thunderforestAPIKey=abc
 
 ## Open Source Services used:
 
