@@ -10,8 +10,9 @@ public final class LocationHelper {
 	 *
 	 * @param latlong A string in the form "lat,long"
 	 * @return A GeoPoint representing the lat,long string.
+	 * @throws NumberFormatException If an invalid lat or long is specified.
 	 */
-	public static GeoPoint parseLatLong(final String latlong) {
+	public static GeoPoint parseLatLong(final String latlong) throws NumberFormatException {
 		if (latlong == null || latlong.isEmpty()) {
 			return null;
 		}

@@ -108,9 +108,12 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 
 						final String schemeSpecificPart = geoUri.getSchemeSpecificPart();
 						if (schemeSpecificPart != null && !schemeSpecificPart.isEmpty()) {
-							final GeoPoint latlong = LocationHelper.parseLatLong(schemeSpecificPart);
-							if (latlong != null && !posInQuery) {
-								this.loc = latlong;
+							try {
+								final GeoPoint latlong = LocationHelper.parseLatLong(schemeSpecificPart);
+								if (latlong != null && !posInQuery) {
+									this.loc = latlong;
+								}
+							} catch (final NumberFormatException ignored) {
 							}
 						}
 					}
