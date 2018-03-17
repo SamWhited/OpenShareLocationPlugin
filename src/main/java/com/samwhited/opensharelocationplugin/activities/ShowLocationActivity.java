@@ -53,11 +53,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		}
 
 		setContentView(R.layout.activity_show_location);
-		setupMapView();
-
-		this.mapController = map.getController();
-		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
-		mapController.setCenter(this.loc);
+		setupMapView(this.loc);
 
 		// Setup the fab button on v21+ devices
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

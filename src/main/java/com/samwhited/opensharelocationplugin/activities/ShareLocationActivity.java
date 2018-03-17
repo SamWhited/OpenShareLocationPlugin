@@ -55,11 +55,7 @@ public class ShareLocationActivity extends LocationActivity implements LocationL
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_share_location);
-		setupMapView();
-
-		this.mapController = map.getController();
-		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
-		mapController.setCenter(Config.INITIAL_POS);
+		setupMapView(Config.INITIAL_POS);
 
 		// Setup the cancel button
 		final Button cancelButton = findViewById(R.id.cancel_button);

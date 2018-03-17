@@ -154,13 +154,16 @@ protected Bitmap marker_icon;
 		}
 	}
 
-	protected void setupMapView() {
+	protected void setupMapView(final GeoPoint pos) {
 		// Get map view and configure it.
 		map = findViewById(R.id.map);
 		map.setTileSource(SettingsHelper.getTileProvider(getApplicationContext(), getPreferences().getString("tile_provider", "OPEN_STREET_MAP")));
 		map.setBuiltInZoomControls(false);
 		map.setMultiTouchControls(true);
 		map.setTilesScaledToDpi(getPreferences().getBoolean("scale_tiles_for_high_dpi", false));
+		this.mapController = map.getController();
+		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
+		mapController.setCenter(pos);
 	}
 
 	protected void gotoLoc() {
