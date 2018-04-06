@@ -1,0 +1,24 @@
+<resources>
+    <string name="title_activity_share_location">Compartir ubicación</string>
+    <string name="title_activity_show_location">Mostrar ubicación</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="title_activity_about">Acerca de</string>
+
+    <string name="action_directions">Navegación</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_fix_to_location">Fijar ubicación</string>
+    <string name="action_unfix_from_location">Quitar ubicación</string>
+    <string name="action_copy_location">Copiar ubicación</string>
+    <string name="action_share_location">Compartir ubicación</string>
+
+    <string name="location_disabled">Compartir ubicación deshabilitado</string>
+    <string name="enable">Habilitar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="share">Compartir</string>
+
+    <string name="pref_tile_provider">Proveedor del mapa</string>
+    <string name="pref_scale_tiles">Escala del mapa</string>
+    <string name="pref_scale_tiles_summary">Expandir el mapa para usuarios con discapacidad visual o pantallas de alta resolución (DPI)</string>
+
+    <string name="action_show_public_transport">Mostrar transporte público</string>
+</resources>
