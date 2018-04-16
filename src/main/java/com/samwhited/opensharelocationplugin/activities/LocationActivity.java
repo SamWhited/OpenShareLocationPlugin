@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.samwhited.opensharelocationplugin.BuildConfig;
 import com.samwhited.opensharelocationplugin.R;
 import com.samwhited.opensharelocationplugin.overlays.Marker;
 import com.samwhited.opensharelocationplugin.overlays.MyLocation;
@@ -113,6 +114,7 @@ protected Bitmap marker_icon;
 		final Context ctx = getApplicationContext();
 		final IConfigurationProvider config = Configuration.getInstance();
 		config.load(ctx, getPreferences());
+		config.setUserAgentValue(BuildConfig.APPLICATION_ID + "_" + BuildConfig.VERSION_CODE);
 
 		final File f = new File(getApplicationContext().getCacheDir()+ "/tiles");
 		try {
