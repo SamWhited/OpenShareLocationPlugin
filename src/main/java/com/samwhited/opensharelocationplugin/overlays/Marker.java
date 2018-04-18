@@ -12,41 +12,43 @@ import org.osmdroid.views.overlay.mylocation.SimpleLocationOverlay;
  * An immutable marker overlay.
  */
 public class Marker extends SimpleLocationOverlay {
-	private final GeoPoint position;
-	private final Bitmap icon;
-	private final Point mapPoint;
+    private final GeoPoint position;
+    private final Bitmap icon;
+    private final Point mapPoint;
 
-	/**
-	 * Create a marker overlay which will be drawn at the current Geographical position.
-	 * @param icon A bitmap icon for the marker
-	 * @param position The geographic position where the marker will be drawn (if it is inside the view)
-	 */
-	public Marker(final Bitmap icon, final GeoPoint position) {
-		super(icon);
-		this.icon = icon;
-		this.position = position;
-		this.mapPoint = new Point();
-	}
+    /**
+     * Create a marker overlay which will be drawn at the current Geographical position.
+     *
+     * @param icon     A bitmap icon for the marker
+     * @param position The geographic position where the marker will be drawn (if it is inside the view)
+     */
+    public Marker(final Bitmap icon, final GeoPoint position) {
+        super(icon);
+        this.icon = icon;
+        this.position = position;
+        this.mapPoint = new Point();
+    }
 
-	/**
-	 * Create a marker overlay which will be drawn centered in the view.
-	 * @param icon A bitmap icon for the marker
-	 */
-	public Marker(final Bitmap icon) {
-		this(icon, null);
-	}
+    /**
+     * Create a marker overlay which will be drawn centered in the view.
+     *
+     * @param icon A bitmap icon for the marker
+     */
+    public Marker(final Bitmap icon) {
+        this(icon, null);
+    }
 
-	@Override
-	public void draw(final Canvas c, final MapView view, final boolean shadow) {
-		super.draw(c, view, shadow);
+    @Override
+    public void draw(final Canvas c, final MapView view, final boolean shadow) {
+        super.draw(c, view, shadow);
 
-		// If no position was set for the marker, draw it centered in the view.
-		view.getProjection().toPixels(this.position == null ? view.getMapCenter() : position, mapPoint);
+        // If no position was set for the marker, draw it centered in the view.
+        view.getProjection().toPixels(this.position == null ? view.getMapCenter() : position, mapPoint);
 
-		c.drawBitmap(icon,
-				mapPoint.x - icon.getWidth() / 2,
-				mapPoint.y - icon.getHeight(),
-				null);
+        c.drawBitmap(icon,
+                mapPoint.x - icon.getWidth() / 2,
+                mapPoint.y - icon.getHeight(),
+                null);
 
-	}
+    }
 }

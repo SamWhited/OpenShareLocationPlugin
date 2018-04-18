@@ -4,19 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.samwhited.opensharelocationplugin.activities.ShowLocationActivity">
-    <org.osmdroid.views.MapView android:id="@+id/map"
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/action_directions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_directions_white_24dp"
-        android:tint="@android:color/white"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:background="@color/accent"
-        android:contentDescription="@string/action_directions"/>
+        android:contentDescription="@string/action_directions"
+        android:src="@drawable/ic_directions_white_24dp"
+        android:tint="@android:color/white" />
 </RelativeLayout>

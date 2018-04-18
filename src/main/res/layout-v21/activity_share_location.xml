@@ -8,20 +8,22 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/button_bar">
-    <org.osmdroid.views.MapView android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/toggle_fixed_marker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_gps_fixed_white_24dp"
-        android:tint="@android:color/white"
-        android:layout_margin="16dp"
-        android:background="@color/accent"
-        android:contentDescription="@string/action_unfix_from_location"/>
+        <org.osmdroid.views.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/toggle_fixed_marker_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:background="@color/accent"
+            android:contentDescription="@string/action_unfix_from_location"
+            android:src="@drawable/ic_gps_fixed_white_24dp"
+            android:tint="@android:color/white" />
     </FrameLayout>
 
     <!-- Parts of this resource are copied from the official location sharing plugin by iNPUTmice -->
@@ -29,11 +31,11 @@
         android:id="@+id/snackbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_above="@+id/button_bar"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_above="@+id/button_bar"
+        android:layout_marginTop="4dp"
         android:background="@drawable/snackbar"
         android:minHeight="48dp"
         android:visibility="visible">
@@ -45,25 +47,26 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/snackbar_action"
             android:paddingStart="24dp"
+            android:text="@string/location_disabled"
             android:textColor="@color/ondarktext"
             android:textSize="?attr/TextSizeBody"
-            android:text="@string/location_disabled"
-            tools:ignore="RtlSymmetry"/>
+            tools:ignore="RtlSymmetry" />
+
         <TextView
             android:id="@+id/snackbar_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:paddingBottom="16dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:paddingTop="16dp"
+            android:text="@string/enable"
             android:textAllCaps="true"
             android:textColor="@color/ondarktext"
             android:textSize="?attr/TextSizeBody"
-            android:textStyle="bold"
-            android:text="@string/enable"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <LinearLayout

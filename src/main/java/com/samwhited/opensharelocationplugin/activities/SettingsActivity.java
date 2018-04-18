@@ -10,20 +10,20 @@ import com.samwhited.opensharelocationplugin.fragments.SettingsFragment;
 
 public class SettingsActivity extends Activity {
 
-	@Override
-	protected void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		final FragmentManager fm = getFragmentManager();
-		SettingsFragment mSettingsFragment = (SettingsFragment) fm.findFragmentById(android.R.id.content);
-		if (mSettingsFragment == null || !mSettingsFragment.getClass().equals(SettingsFragment.class)) {
-			mSettingsFragment = new SettingsFragment();
-			fm.beginTransaction().replace(android.R.id.content, mSettingsFragment).commit();
-		}
-	}
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final FragmentManager fm = getFragmentManager();
+        SettingsFragment mSettingsFragment = (SettingsFragment) fm.findFragmentById(android.R.id.content);
+        if (mSettingsFragment == null || !mSettingsFragment.getClass().equals(SettingsFragment.class)) {
+            mSettingsFragment = new SettingsFragment();
+            fm.beginTransaction().replace(android.R.id.content, mSettingsFragment).commit();
+        }
+    }
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.settings, false);
-	}
+    @Override
+    protected void onStart() {
+        super.onStart();
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.settings, false);
+    }
 }

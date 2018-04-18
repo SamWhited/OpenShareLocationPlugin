@@ -1,23 +1,23 @@
 <resources>
-	<string name="title_activity_share_location">Partager localisation</string>
-	<string name="title_activity_show_location">Montrer localisation</string>
-	<string name="title_activity_about">À propos de l’application</string>
-	<string name="title_activity_settings">Paramètres</string>
+    <string name="title_activity_share_location">Partager localisation</string>
+    <string name="title_activity_show_location">Montrer localisation</string>
+    <string name="title_activity_about">À propos de l’application</string>
+    <string name="title_activity_settings">Paramètres</string>
 
-	<string name="action_copy_location">Copier localisation</string>
-	<string name="action_share_location">Partager localisation</string>
-	<string name="action_fix_to_location">Fixer localisation</string>
-	<string name="action_unfix_from_location">Détacher localisation</string>
-	<string name="action_show_public_transport">Montrer transports en communs</string>
-	<string name="action_directions">Navigation</string>
-	<string name="action_settings">Paramètres</string>
+    <string name="action_copy_location">Copier localisation</string>
+    <string name="action_share_location">Partager localisation</string>
+    <string name="action_fix_to_location">Fixer localisation</string>
+    <string name="action_unfix_from_location">Détacher localisation</string>
+    <string name="action_show_public_transport">Montrer transports en communs</string>
+    <string name="action_directions">Navigation</string>
+    <string name="action_settings">Paramètres</string>
 
-	<string name="location_disabled">La localisation est désactivée</string>
-	<string name="enable">Activer</string>
-	<string name="cancel">Annuler</string>
-	<string name="share">Partager</string>
+    <string name="location_disabled">La localisation est désactivée</string>
+    <string name="enable">Activer</string>
+    <string name="cancel">Annuler</string>
+    <string name="share">Partager</string>
 
-	<string name="pref_tile_provider">Fournisseur de cartes</string>
-	<string name="pref_scale_tiles">Élargir les tuiles</string>
-	<string name="pref_scale_tiles_summary">Élargir les tuiles pour utilisateurs malvoyants ou écrans à haut DPI (PPP)</string>
+    <string name="pref_tile_provider">Fournisseur de cartes</string>
+    <string name="pref_scale_tiles">Élargir les tuiles</string>
+    <string name="pref_scale_tiles_summary">Élargir les tuiles pour utilisateurs malvoyants ou écrans à haut DPI (PPP)</string>
 </resources>
