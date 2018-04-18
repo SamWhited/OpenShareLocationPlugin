@@ -18,14 +18,12 @@ Then, edit or create the file `~/.gradle/gradle.properties` and add the key:
 ## Open Source Services used:
 
  - [OSMDroid][osmdroid]
- - [Mapnik][mapnik]
  - [OpenStreetMap][osm]
  - [OpenMap][openmap]
 
 [Thunderforest]: http://www.thunderforest.com
 [conversations]: https://github.com/siacs/Conversations
 [osmdroid]: https://github.com/osmdroid/osmdroid
-[mapnik]: http://mapnik.org/
 [jellybean]: https://developer.android.com/about/versions/android-4.2.html
 [osm]: https://www.openstreetmap.org/
 [openmap]: https://openmap.lt/
