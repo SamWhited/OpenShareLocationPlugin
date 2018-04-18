@@ -1,91 +1,54 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.samwhited.opensharelocationplugin.activities.ShareLocationActivity"
+    android:id="@+id/snackbarCoordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.samwhited.opensharelocationplugin.activities.ShareLocationActivity">
-
-    <org.osmdroid.views.MapView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/button_bar" />
-
-    <!-- Parts of this resource are copied from the official location sharing plugin by iNPUTmice -->
+    android:layout_height="match_parent">
     <RelativeLayout
-        android:id="@+id/snackbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_bar"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/snackbar"
-        android:minHeight="48dp"
-        android:visibility="visible">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/snackbar_action"
-            android:paddingStart="24dp"
-            android:text="@string/location_disabled"
-            android:textColor="@color/ondarktext"
-            android:textSize="?attr/TextSizeBody"
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:id="@+id/snackbar_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:paddingBottom="16dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="16dp"
-            android:text="@string/enable"
-            android:textAllCaps="true"
-            android:textColor="@color/ondarktext"
-            android:textSize="?attr/TextSizeBody"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/button_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        tools:ignore="RtlHardcoded">
-
-        <Button
-            android:id="@+id/cancel_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel"
-            android:textColor="@color/primarytext" />
-
-        <View
-            android:layout_width="1dp"
+        <org.osmdroid.views.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="7dp"
-            android:layout_marginTop="7dp"
-            android:background="@color/divider" />
+            android:layout_above="@+id/button_bar" />
 
-        <Button
-            android:id="@+id/share_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/button_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share"
-            android:textColor="@color/primarytext" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            tools:ignore="RtlHardcoded">
 
-</RelativeLayout>
+            <Button
+                android:id="@+id/cancel_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textColor="@color/primarytext" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7dp"
+                android:layout_marginTop="7dp"
+                android:background="@color/divider" />
+
+            <Button
+                android:id="@+id/share_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/share"
+                android:textColor="@color/primarytext" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
