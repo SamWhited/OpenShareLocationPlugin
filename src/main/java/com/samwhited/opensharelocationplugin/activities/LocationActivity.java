@@ -59,9 +59,9 @@ public abstract class LocationActivity extends AppCompatActivity implements Loca
 	protected MapView map = null;
 	protected IMapController mapController = null;
 
-protected Bitmap marker_icon;
+	protected Bitmap marker_icon;
 
-	protected void updateOverlays() {
+	private void updateOverlays() {
 		Log.d(Config.LOGTAG, "Updating overlays...");
 		if (this.map == null) {
 			Log.d(Config.LOGTAG, "No map found, failed to update overlays.");
@@ -129,7 +129,6 @@ protected Bitmap marker_icon;
 
 		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		this.marker_icon = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.marker);
-		updateOverlays();
 	}
 
 	@Override
@@ -166,6 +165,7 @@ protected Bitmap marker_icon;
 		this.mapController = map.getController();
 		mapController.setZoom(Config.INITIAL_ZOOM_LEVEL);
 		mapController.setCenter(pos);
+		updateOverlays();
 	}
 
 	protected void gotoLoc() {
