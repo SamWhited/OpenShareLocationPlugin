@@ -81,27 +81,28 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 					// Attempt to set zoom level if the geo URI specifies it
 					if (geoUri != null) {
 						final HashMap<String, String> query = UriHelper.parseQueryString(geoUri.getQuery());
-
-						// Check for zoom level.
-						final String z = query.get("z");
-						if (z != null) {
-							try {
-								mapController.setZoom(Double.valueOf(z));
-							} catch (final Exception ignored) {
-							}
-						}
-
-						// Check for the actual geo query.
 						boolean posInQuery = false;
-						final String q = query.get("q");
-						if (q != null) {
-							final Pattern latlng = Pattern.compile("/^([-+]?[0-9]+(\\.[0-9]+)?),([-+]?[0-9]+(\\.[0-9]+)?)(\\(.*\\))?/");
-							final Matcher m = latlng.matcher(q);
-							if (m.matches()) {
+						if (query != null) {
+							// Check for zoom level.
+							final String z = query.get("z");
+							if (z != null) {
 								try {
-									this.loc = new GeoPoint(Double.valueOf(m.group(1)), Double.valueOf(m.group(3)));
-									posInQuery = true;
+									mapController.setZoom(Double.valueOf(z));
 								} catch (final Exception ignored) {
+								}
+							}
+
+							// Check for the actual geo query.
+							final String q = query.get("q");
+							if (q != null) {
+								final Pattern latlng = Pattern.compile("/^([-+]?[0-9]+(\\.[0-9]+)?),([-+]?[0-9]+(\\.[0-9]+)?)(\\(.*\\))?/");
+								final Matcher m = latlng.matcher(q);
+								if (m.matches()) {
+									try {
+										this.loc = new GeoPoint(Double.valueOf(m.group(1)), Double.valueOf(m.group(3)));
+										posInQuery = true;
+									} catch (final Exception ignored) {
+									}
 								}
 							}
 						}
