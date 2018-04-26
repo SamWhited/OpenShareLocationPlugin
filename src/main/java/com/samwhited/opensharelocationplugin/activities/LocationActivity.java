@@ -3,6 +3,7 @@ package com.samwhited.opensharelocationplugin.activities;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,11 +12,13 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,6 +47,7 @@ import java.io.File;
 
 public abstract class LocationActivity extends AppCompatActivity implements LocationListener {
     public static final String PREF_SHOW_PUBLIC_TRANSPORT = "pref_show_public_transport";
+    public static final String PREF_SHOW_UPDATE_MESSAGE = "pref_show_update_message";
     public static final int REQUEST_CODE_CREATE = 0;
     public static final int REQUEST_CODE_FAB_PRESSED = 1;
     public static final int REQUEST_CODE_SNACKBAR_PRESSED = 2;
@@ -124,6 +128,27 @@ public abstract class LocationActivity extends AppCompatActivity implements Loca
 
         this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         this.marker_icon = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.marker);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        final SharedPreferences prefs = getPreferences();
+        if (prefs.getBoolean(PREF_SHOW_UPDATE_MESSAGE, true)) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.merge_dialog)
+                    .setPositiveButton(R.string.buy_me_a_coffee, (dialog, id) -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/samwhited"));
+                        startActivity(browserIntent);
+                    })
+                    .setNeutralButton(R.string.liberapay, (dialog, id) -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://liberapay.com/SamWhited"));
+                        startActivity(browserIntent);
+                    })
+                    .create().show();
+            prefs.edit().putBoolean(PREF_SHOW_UPDATE_MESSAGE, false).apply();
+        }
     }
 
     @Override
