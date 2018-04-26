@@ -20,5 +20,13 @@
     <string name="pref_scale_tiles">Scalare hartă</string>
     <string name="pref_scale_tiles_summary">Scalează mărimea hărții pentru cei cu deficiențe de vedere sau pentru ecranele dispozitivelor cu rezoluție mare</string>
 
+    <string name="liberapay">Donează pe Liberapay</string>
+    <string name="buy_me_a_coffee">Cumpără-mi o cafea</string>
+    <string name="merge_dialog">
+        Această extensie a fost integrată în Conversations 2.3!
+        După ce veți actualiza Conversations poate veți dori să dezinstalați această extensie și să folosiți versiunea integrată.
+        Dacă ați găsit această extensie utilă, poate luați în considerare posibilitatea de a îmi cumpăra o cafea!
+    </string>
+
     <string name="action_show_public_transport">Arată transportul public</string>
 </resources>
